@@ -1,0 +1,125 @@
+.footer { 
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
+    display: flex; 
+    min-height: 100vh; 
+    margin: 0;
+    overflow: hidden; 
+    color: #333; 
+}
+
+/* Panel Izquierdo (Contiene la imagen grande) */
+.left-panel {
+    flex: 0 0 45%; /* Ocupa el 45% del ancho total de la pantalla */
+    background-image: url('../images/login_image1.jpg');
+    background-size:cover; 
+    background-position: center; 
+    position: relative; 
+    display: flex; 
+    align-items: flex-end; 
+    padding: 20px; 
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
+}
+
+/* Panel Derecho (Contiene el formulario de login) */
+.right-panel {
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #f2f7fc; 
+    padding: 20px;
+    flex-direction: column; 
+}
+
+/* Contenedor para el contenido principal del login dentro del panel derecho */
+.login-content {
+    width: 100%;
+    max-width: 400px; 
+    text-align: center; 
+    padding: 30px; 
+}
+
+/* Estilos del logo */
+.login-content .logo {
+    max-width: 120px; 
+    margin-bottom: 30px; 
+}
+
+/* Estilos del título principal */
+.login-content h2 {
+    font-size: 1.8rem; 
+    font-weight: 400; 
+    color: #34495e; 
+    margin-bottom: 10px; 
+}
+
+/* Estilos del subtítulo */
+.login-content p {
+    font-size: 0.95rem;
+    color: #6c7e92; 
+    margin-bottom: 30px; 
+}
+
+/* Estilos de los campos de entrada (Usuario, Contraseña) */
+.form-control {
+    border-radius: 4px; 
+    padding: 12px 15px; 
+    border: 1px solid #ced4da; 
+}
+
+/* Estilos del campo de entrada al enfocarlo */
+.form-control:focus {
+    border-color: #8bbcdc; 
+    box-shadow: 0 0 0 0.25rem rgba(139, 188, 220, 0.25); 
+}
+
+/* Estilos del botón de Login */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 12px 25px; 
+    border-radius: 4px; 
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Efecto hover para el botón */
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Estilos del mensaje de error */
+.error-message {
+    color: #dc3545; 
+    margin-top: 15px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Media Queries para responsividad (para que el diseño se adapte a diferentes tamaños de pantalla) */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; 
+    }
+    .left-panel {
+        flex: none; 
+        height: 250px; 
+        width: 100%; 
+    }
+    .right-panel {
+        padding: 30px 20px; 
+    }
+    .login-content {
+        max-width: 100%; 
+    }
+}

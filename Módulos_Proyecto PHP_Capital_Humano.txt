@@ -1,0 +1,57 @@
+Módulos
+1. Login
+2. CRUD de Usuarios Administrativos. Módulo de Usuarios (Altas y 
+consultas). Los usuarios no se pueden eliminar, solo se pueden 
+desactivar Activo (1,0). 
+3. Módulos de Roles (Permisos - Alcance). Los usuarios pueden tener 
+distintos roles. Algunos pueden tener el control total o solo algunos 
+módulos.  El sistema debe contar con css y menús horizontales. Cada 
+módulo debe permitir regresar al menú principal (HOME)
+4. El sistema debe permitir subir una foto del colaborador y permitir 
+ver una miniatura en el reporte y de darle clic ver la original 
+(redimensionarla) de tal modo que todas las fotos tengan el mismo 
+tamaño.
+5. Módulos de Colaboradores (PrimerNombre, SegundoNombre, 
+PrimerApellido, Segundo Apellido, Sexo,  Identificación, Fecha de 
+Nacimiento, Foto de Perfil del colaborador, Correo personal, Teléfono, 
+Celular, Dirección (ubicación de la persona).  
+6. Módulo de cargo con información del  (Sueldo, Departamento al que 
+pertenece, Fecha de contratación, …[], Empleado Activo 
+(1,0),(Permanente, Eventual o Interino), Ocupación (Programador, 
+Electricista). Un colaborador puede tener varios cargos. Se conocerá 
+como Módulo de Cargos o movimientos del Colaborador. Un 
+colaborador puede tener ascensos, promociones, en un tiempo tiene un 
+sueldo, y luego puede ascender y tener otro sueldo u otras funciones. 
+Osea que puedo tener varios cargos, y solo uno debe ser el que está 
+activo. Luego que se crea un cargo, es importante firmar los datos para 
+validar la integridad de los mismos. Usar OpenSSL. 
+7. Estatus del Colaborador (Vacaciones, Licencia, Incapacitado). 
+8. Permitir subir un PDF con su historial académico (Opcional) 
+9. Reporte de los datos del Colaborador y su sueldo. 
+10. El Reporte debe tener un buscador, que permita hacer búsquedas por 
+sexo, edad, nombre, apellido, salario. O que me permita generar los 
+salarios mayores a 700, 900 dólares, por ejemplo. Está búsqueda debe 
+permitir generar un informe en Excel. 
+11. Informes en formato Excel. 
+12. Los Reportes debe tener paginación. 
+13. El Sistema debe generar estadísticas (Colaboradores por sexo), 
+Colaboradores por Edad. Cuántos tienen en un rango de edad por 
+ejemplo de 25-30. Colaboradores por Dirección.
+14. El sistema debe brindar la posibilidad de ver los datos de los 
+colaboradores por Dirección. (Opcional) 
+15. Un colaborador tiene vacaciones a razón de 1 día por 11 días 
+trabajados. O por cada 11 meses tenemos derecho a un mes de 
+vacaciones. Realizar un módulo que genere los resueltos de 
+vacaciones. Luego de tener resueltos de vacaciones el colaborador 
+puede pedir permisos de vacaciones a razón de 7 días como mínimo. 
+Generar el resuelto de vacaciones en formato PDF. 
+16. Simular que tienen más de 11 meses de estar trabajando. 
+17. Realizar una APIs REST para facilitar información de cuántos 
+colaboradores tiene por sexo a la Contraloría General. Solo a la 
+Contraloría General. 
+Página Pública (Puntos Extras) 
+18. Implementar hash en las credenciales. Implementar firmas al cargo del 
+colaborador para verificar la integridad de estos. 
+19. La conexión debe realizarse mediante una clase. 
+20. Debe contar con una clase de sanitizar y validar datos. 
+21. Utilizar Interfaces para control de errores. 
