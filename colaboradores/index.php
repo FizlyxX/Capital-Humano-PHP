@@ -3,8 +3,11 @@ session_start();
 
 require_once '../config.php';
 require_once 'funciones.php'; // Incluye las funciones del módulo de colaboradores
-require_once '../classes/Footer.php'; 
-require_once '../includes/navbar.php'; 
+require_once '../classes/Footer.php'; // Requiere la clase Footer (para su renderización)
+
+// La variable $current_page debe ser definida antes de que navbar.php sea incluido
+$current_page = 'colaboradores';
+// MOVIDO require_once '../includes/navbar.php'; DENTRO DEL BODY (ver más abajo)
 
 // Verificar si el usuario ha iniciado sesión y tiene permisos de Administrador o RRHH
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdministrador() && !esRRHH())) {
@@ -12,11 +15,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdmin
     exit;
 }
 
-// Definir la página actual para que el navbar la resalte
-$current_page = 'colaboradores';
-
 // Obtener colaboradores. Se puede pasar true a getColaboradores() para mostrar inactivos.
-// El $_GET['mostrar_inactivos'] se usa para un toggle en la interfaz.
 $mostrar_inactivos_param = isset($_GET['mostrar_inactivos']) && $_GET['mostrar_inactivos'] == 'true';
 $colaboradores = getColaboradores($link, $mostrar_inactivos_param);
 
@@ -31,12 +30,10 @@ if (isset($_GET['msg'])) {
         $mensaje_confirmacion = '<div class="alert alert-warning" role="alert">Colaborador desactivado exitosamente.</div>';
     } elseif ($_GET['msg'] == 'activado') {
         $mensaje_confirmacion = '<div class="alert alert-success" role="alert">Colaborador activado exitosamente.</div>';
-    } elseif ($_GET['msg'] == 'error_identificacion') {
-        $mensaje_confirmacion = '<div class="alert alert-danger" role="alert">Error: La identificación (cédula) ingresada ya existe.</div>';
     } elseif (isset($_GET['error_upload'])) {
          $mensaje_confirmacion = '<div class="alert alert-danger" role="alert">Error al subir archivo: ' . htmlspecialchars($_GET['error_upload']) . '</div>';
-    } elseif ($_GET['msg'] == 'error') {
-        $mensaje_confirmacion = '<div class="alert alert-danger" role="alert">Ocurrió un error en la operación.</div>';
+    } elseif ($_GET['msg'] == 'error' || $_GET['msg'] == 'error_identificacion' || $_GET['msg'] == 'error_notfound') {
+        $mensaje_confirmacion = '<div class="alert alert-danger" role="alert">Ocurrió un error en la operación: ' . htmlspecialchars($_GET['error_upload'] ?? 'Detalles no especificados.') . '</div>';
     }
 }
 
@@ -50,45 +47,11 @@ mysqli_close($link);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulo de Colaboradores - Capital Humano</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        body { display: flex; flex-direction: column; min-height: 100vh; }
-        .content-wrapper { flex: 1; padding-bottom: 50px; }
-        .table-responsive { margin-top: 20px; }
-        .photo-thumbnail {
-            width: 50px; /* Tamaño de la miniatura en la tabla */
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%; /* Para hacerla circular */
-            border: 1px solid #ddd;
-        }
-        /* Badges para el estado Activo/Inactivo */
-        .status-badge {
-            padding: .3em .6em;
-            border-radius: .25rem;
-            font-size: 0.85em;
-            font-weight: bold;
-        }
-        .status-badge.active {
-            background-color: #28a745; 
-            color: white;
-        }
-        .status-badge.inactive {
-            background-color: #dc3545; 
-            color: white;
-        }
-         .footer { 
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
-            width: 100%;
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="../css/style.css"> 
+    </head>
 <body>
+    <?php require_once '../includes/navbar.php'; ?>
+
     <div class="container mt-4 content-wrapper">
         <h2>Gestión de Colaboradores</h2>
         <p>Administra la información de los colaboradores de la empresa.</p>
@@ -115,7 +78,8 @@ mysqli_close($link);
                             <th>Identificación</th>
                             <th>Sexo</th>
                             <th>F. Nacimiento</th>
-                            <th>Estado</th> <th>Acciones</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,20 +88,20 @@ mysqli_close($link);
                                 <td>
                                     <?php if (!empty($colaborador['ruta_foto_perfil'])): ?>
                                         <?php
-                                            // Generar la ruta de la miniatura (asumiendo que se guardó con prefijo 'thumb_')
+                                            // La variable $colaborador['ruta_foto_perfil'] ya contiene la URL completa
                                             $base_foto_name = basename($colaborador['ruta_foto_perfil']);
                                             $thumbnail_url = URL_BASE_FOTOS . 'thumb_' . $base_foto_name;
-                                            $original_url = URL_BASE_FOTOS . 'original_' . $base_foto_name;
+                                            $original_url_for_link = $colaborador['ruta_foto_perfil']; // URL para la imagen grande al hacer clic
                                         ?>
-                                        <a href="<?php echo htmlspecialchars($original_url); ?>" target="_blank" title="Ver foto original">
+                                        <a href="<?php echo htmlspecialchars($original_url_for_link); ?>" target="_blank" title="Ver foto original">
                                             <img src="<?php echo htmlspecialchars($thumbnail_url); ?>" alt="Foto de Perfil" class="photo-thumbnail">
                                         </a>
                                     <?php else: ?>
                                         <img src="https://via.placeholder.com/50?text=No+Foto" alt="Sin Foto" class="photo-thumbnail">
                                     <?php endif; ?>
                                 </td>
-                                <td><?php echo htmlspecialchars($colaborador['primer_nombre'] . ' ' . $colaborador['segundo_nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($colaborador['primer_apellido'] . ' ' . $colaborador['segundo_apellido']); ?></td>
+                                <td><?php echo htmlspecialchars($colaborador['primer_nombre'] . ' ' . ($colaborador['segundo_nombre'] ?? '')); ?></td>
+                                <td><?php echo htmlspecialchars($colaborador['primer_apellido'] . ' ' . ($colaborador['segundo_apellido'] ?? '')); ?></td>
                                 <td><?php echo htmlspecialchars($colaborador['identificacion']); ?></td>
                                 <td><?php echo htmlspecialchars($colaborador['sexo']); ?></td>
                                 <td><?php echo htmlspecialchars($colaborador['fecha_nacimiento']); ?></td>
@@ -150,14 +114,18 @@ mysqli_close($link);
                                 </td>
                                 <td>
                                     <a href="ver.php?id=<?php echo $colaborador['id_colaborador']; ?>" class="btn btn-info btn-sm">Ver</a>
-                                    <a href="editar.php?id=<?php echo $colaborador['id_colaborador']; ?>" class="btn btn-info btn-sm">Editar</a>
+                                    <a href="editar.php?id=<?php echo $colaborador['id_colaborador']; ?>" class="btn btn-primary btn-sm">Editar</a>
                                     <?php if ($colaborador['activo'] == 1): ?>
                                         <a href="eliminar.php?id=<?php echo $colaborador['id_colaborador']; ?>" class="btn btn-warning btn-sm" onclick="return confirm('¿Está seguro de DESACTIVAR a este colaborador?');">Desactivar</a>
                                     <?php else: ?>
                                         <a href="activar.php?id=<?php echo $colaborador['id_colaborador']; ?>" class="btn btn-success btn-sm" onclick="return confirm('¿Está seguro de ACTIVAR a este colaborador?');">Activar</a>
                                     <?php endif; ?>
                                     <?php if (!empty($colaborador['ruta_historial_academico_pdf'])): ?>
-                                        <a href="<?php echo htmlspecialchars(URL_BASE_PDFS . basename($colaborador['ruta_historial_academico_pdf'])); ?>" target="_blank" class="btn btn-secondary btn-sm mt-1">Ver PDF</a>
+                                        <?php
+                                            $base_pdf_name = basename($colaborador['ruta_historial_academico_pdf']);
+                                            $pdf_url = URL_BASE_PDFS . $base_pdf_name;
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($pdf_url); ?>" target="_blank" class="btn btn-secondary btn-sm mt-1">Ver PDF</a>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -168,9 +136,7 @@ mysqli_close($link);
         <?php else: ?>
             <div class="alert alert-info">No hay colaboradores registrados en el sistema.</div>
         <?php endif; ?>
-    </div>
-
-    <?php
+    </div> <?php
     if (class_exists('Footer')) {
         $footer = new Footer();
         $footer->render();

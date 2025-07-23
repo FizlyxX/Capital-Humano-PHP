@@ -1,125 +1,116 @@
-.footer { 
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
-            width: 100%;
-        }
+/*
+ * Archivo: style.css (CSS general para la aplicación)
+ */
+
+/* ===================================================================== */
+/* ESTILOS GLOBALES Y DE LAYOUT PARA LA APLICACIÓN (NO LOGIN) */
+/* ===================================================================== */
+
 body {
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
-    display: flex; 
-    min-height: 100vh; 
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
-    overflow: hidden; 
-    color: #333; 
+    color: #333;
+    display: flex;             
+    flex-direction: column;    
+    min-height: 100vh;         
+    overflow-x: hidden;        
+    background-color: #f8f9fa; 
 }
 
-/* Panel Izquierdo (Contiene la imagen grande) */
-.left-panel {
-    flex: 0 0 45%; /* Ocupa el 45% del ancho total de la pantalla */
-    background-image: url('../images/login_image1.jpg');
-    background-size:cover; 
-    background-position: center; 
-    position: relative; 
-    display: flex; 
-    align-items: flex-end; 
-    padding: 20px; 
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
+/*
+ * Contenedores principales de contenido (.content para home, .content-wrapper para módulos):a.
+ */
+.content, .content-wrapper { 
+    flex: 1;                  
+    overflow-y: auto;         
+    padding: 20px 15px;       
 }
 
-/* Panel Derecho (Contiene el formulario de login) */
-.right-panel {
-    flex: 1; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    background-color: #f2f7fc; 
+/*
+ * Estilos del FOOTER:
+ */
+.footer { 
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
     padding: 20px;
-    flex-direction: column; 
-}
-
-/* Contenedor para el contenido principal del login dentro del panel derecho */
-.login-content {
-    width: 100%;
-    max-width: 400px; 
-    text-align: center; 
-    padding: 30px; 
-}
-
-/* Estilos del logo */
-.login-content .logo {
-    max-width: 120px; 
-    margin-bottom: 30px; 
-}
-
-/* Estilos del título principal */
-.login-content h2 {
-    font-size: 1.8rem; 
-    font-weight: 400; 
-    color: #34495e; 
-    margin-bottom: 10px; 
-}
-
-/* Estilos del subtítulo */
-.login-content p {
-    font-size: 0.95rem;
-    color: #6c7e92; 
-    margin-bottom: 30px; 
-}
-
-/* Estilos de los campos de entrada (Usuario, Contraseña) */
-.form-control {
-    border-radius: 4px; 
-    padding: 12px 15px; 
-    border: 1px solid #ced4da; 
-}
-
-/* Estilos del campo de entrada al enfocarlo */
-.form-control:focus {
-    border-color: #8bbcdc; 
-    box-shadow: 0 0 0 0.25rem rgba(139, 188, 220, 0.25); 
-}
-
-/* Estilos del botón de Login */
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 12px 25px; 
-    border-radius: 4px; 
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-/* Efecto hover para el botón */
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Estilos del mensaje de error */
-.error-message {
-    color: #dc3545; 
-    margin-top: 15px;
-    font-weight: 500;
+    color: #6c757d;
     font-size: 0.9rem;
+    width: 100%;
 }
 
-/* Media Queries para responsividad (para que el diseño se adapte a diferentes tamaños de pantalla) */
+/* ===================================================================== */
+/* ESTILOS ESPECÍFICOS DE LOS MÓDULOS DE CRUD (COLABORADORES, USUARIOS, ROLES) */
+/* ===================================================================== */
+
+/* Estilos para miniaturas de fotos en tablas (Módulo Colaboradores - index.php) */
+.photo-thumbnail {
+    width: 50px; 
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%; 
+    border: 1px solid #ddd;
+}
+
+/* Estilos para badges de estado (Activo/Inactivo) */
+.status-badge {
+    padding: .3em .6em;
+    border-radius: .25rem;
+    font-size: 0.85em;
+    font-weight: bold;
+    display: inline-block;
+}
+.status-badge.active {
+    background-color: #28a745;
+    color: white;
+}
+.status-badge.inactive {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Estilos para vista previa de fotos en formularios de edición (colaboradores/editar.php) */
+.current-file-preview {
+    max-width: 150px;
+    max-height: 150px;
+    margin-top: 10px;
+    display: block;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+}
+.current-pdf-link {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Estilos para la página de detalles del colaborador (colaboradores/ver.php) */
+.detail-photo {
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.detail-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #fff;
+}
+.detail-label {
+    font-weight: bold;
+    color: #555;
+}
+
+/* ===================================================================== */
+/* MEDIA QUERIES (PARA RESPONSIVIDAD GENERAL) */
+/* ===================================================================== */
+
 @media (max-width: 768px) {
-    body {
-        flex-direction: column; 
-    }
-    .left-panel {
-        flex: none; 
-        height: 250px; 
-        width: 100%; 
-    }
-    .right-panel {
-        padding: 30px 20px; 
-    }
-    .login-content {
-        max-width: 100%; 
+    .content, .content-wrapper {
+        padding: 15px; /* Menos padding en móvil */
     }
 }

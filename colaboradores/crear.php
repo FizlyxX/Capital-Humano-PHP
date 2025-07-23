@@ -3,11 +3,11 @@ session_start();
 
 require_once '../config.php';
 require_once 'funciones.php';
-require_once '../classes/Footer.php'; // Requiere la clase Footer, no la renderiza aquí
+require_once '../classes/Footer.php'; 
 
 // La variable $current_page debe ser definida antes de que navbar.php sea incluido
 $current_page = 'colaboradores';
-require_once '../includes/navbar.php'; // Requiere el navbar
+require_once '../includes/navbar.php'; 
 
 // Verificar si el usuario ha iniciado sesión y tiene permisos de Administrador o RRHH
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdministrador() && !esRRHH())) {
