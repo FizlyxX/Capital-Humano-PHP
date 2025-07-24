@@ -43,10 +43,21 @@ if (!isset($current_page)) {
                 <li class="nav-item">
                     <a class="nav-link" href="#">Reportes</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'estadisticas') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/estadisticas.php">Estadísticas</a>
-                </li>
-                <li class="nav-item">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle <?php echo ($current_page == 'estadisticas' || $current_page == 'colaboradores_sexo') ? 'active' : ''; ?>" href="#" id="estadisticasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Estadísticas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item <?php echo ($current_page == 'estadisticas') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/estadisticas.php">Generales</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?php echo ($current_page == 'colaboradores_sexo') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/colaboradores_por_sexoView.php">Colaboradores por Sexo</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'vacaciones') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>vacaciones/vacacionesView.php">Vacaciones</a>
                 </li>
                 <?php endif; ?>
