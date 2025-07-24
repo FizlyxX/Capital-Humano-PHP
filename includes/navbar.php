@@ -41,7 +41,7 @@ if (!isset($current_page)) {
                     <a class="nav-link <?php echo ($current_page == 'cargos') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>cargos/index.php">Cargos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Reportes</a>
+                    <a class="nav-link <?php echo ($current_page == 'reportes') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>reportes/colaboradores_sueldos.php">Reportes</a>
                 </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle <?php echo ($current_page == 'estadisticas' || $current_page == 'colaboradores_sexo') ? 'active' : ''; ?>" href="#" id="estadisticasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -56,8 +56,7 @@ if (!isset($current_page)) {
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'vacaciones') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>vacaciones/vacacionesView.php">Vacaciones</a>
                 </li>
                 <?php endif; ?>
