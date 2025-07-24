@@ -40,6 +40,9 @@ if (!isset($current_page)) {
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'colaboradores') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>colaboradores/index.php">Módulo de Colaboradores</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'estadisticas') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/estadisticas.php">Módulo de Estadísticas</a>
+                </li>
                 <?php endif; ?>
 
                 <li class="nav-item">
