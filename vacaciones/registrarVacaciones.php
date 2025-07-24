@@ -40,12 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdf->SetFont('helvetica', '', 12);
 
         // 📌 Logo (ajusta ruta)
-        $logo = '../images/Logo.png';
-        if (file_exists($logo)) {
-            $pdf->Image($logo, 100, 15, 40);
-        }
-
-        $pdf->Ln(10);
+//        $logo = '../images/Logo.png';
+//        if (file_exists($logo)) {
+//            $pdf->Image($logo, 100, 15, 40);
+//        }
+//        $pdf->Ln(10);
 
         // 🎯 Título centrado
         $pdf->SetFont('helvetica', 'B', 16);
