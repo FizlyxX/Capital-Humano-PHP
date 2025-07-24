@@ -19,8 +19,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdmin
 $primer_nombre = $segundo_nombre = $primer_apellido = $segundo_apellido = "";
 $sexo = $identificacion = $fecha_nacimiento = $correo_personal = "";
 $telefono = $celular = $direccion = "";
+$fecha_ingreso = "";
 $primer_nombre_err = $primer_apellido_err = $sexo_err = $identificacion_err = $fecha_nacimiento_err = "";
 $correo_personal_err = $telefono_err = $celular_err = $direccion_err = "";
+$fecha_ingreso_err = "";
 $foto_perfil_err = $historial_academico_pdf_err = "";
 
 // Procesar el formulario cuando se envía
@@ -38,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = trim($_POST['telefono']);
     $celular = trim($_POST['celular']);
     $direccion = trim($_POST['direccion']);
+    $fecha_ingreso = trim($_POST['fecha_ingreso']);
 
     // 2. Validar datos
     if (empty($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
@@ -59,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
+    if (empty($fecha_ingreso)) { $fecha_ingreso_err = "Ingrese la fecha de ingreso."; }
     // Puedes añadir más validaciones (regex para correo/teléfono, formato de fecha, etc.)
 
     // 3. Procesar subida de Foto de Perfil y PDF
@@ -66,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Los errores se propagan si no hay éxito.
 
     // Si no hay errores de validación de texto, proceder con archivos y BD
-    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err)) {
+    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err)) {
         
         $colaborador_data = [
             'primer_nombre' => $primer_nombre,
@@ -79,7 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'correo_personal' => $correo_personal,
             'telefono' => $telefono,
             'celular' => $celular,
-            'direccion' => $direccion
+            'direccion' => $direccion,
+            'fecha_ingreso' => $fecha_ingreso
         ];
 
         $resultado_creacion = crearColaborador($link, $colaborador_data, 'foto_perfil', 'historial_academico_pdf');
@@ -219,6 +224,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="mb-3">
                 <label for="direccion" class="form-label">Dirección:</label>
                 <textarea name="direccion" id="direccion" class="form-control" rows="3"><?php echo htmlspecialchars($direccion); ?></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
+                    <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
+                    <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>
+                    <span class="invalid-feedback text-danger"><?php echo $fecha_ingreso_err; ?></span>
+                </div>
             </div>
 
             <div class="row">

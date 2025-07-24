@@ -13,83 +13,74 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistema de Capital Humano</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Tu CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
     <style>
-        /* Estilos CSS incrustados para el diseño del login con carrusel */
         * {
             font-family: 'Inter', sans-serif;
-            box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho/alto */
         }
 
         body {
-            display: flex; /* Habilita Flexbox para los dos paneles */
-            height: 100vh; /* Asegura que ocupe toda la altura del viewport */
+            display: flex;
+            height: 100vh;
             margin: 0;
-            background-color: #f0f2f5; /* Color de fondo general si no hay carrusel */
-            overflow: hidden; /* Importante para el carrusel de altura completa */
+            background-color: #f0f2f5;
         }
 
-        /* Contenedor del Carrusel (Panel Izquierdo) */
         .carousel-container {
-            flex: 1; /* Ocupa la mitad del ancho (o más, si right-panel es fijo) */
-            overflow: hidden; /* Asegura que el contenido del carrusel no se desborde */
-            position: relative; /* Para posibles elementos superpuestos */
+            flex: 1;
+            overflow: hidden;
         }
 
         .carousel-item img {
-            object-fit: cover; /* Las imágenes cubren el área sin distorsionarse */
-            height: 100vh; /* Las imágenes del carrusel ocupan toda la altura */
-            width: 100%; /* Las imágenes del carrusel ocupan todo el ancho de su contenedor */
+            object-fit: cover;
+            height: 100vh;
+            width: 100%;
         }
 
-        /* Panel Derecho (Formulario de Login) */
         .right-panel {
-            flex: 1; /* Ocupa la otra mitad del ancho (o el espacio restante) */
+            flex: 1;
             display: flex;
-            align-items: center; /* Centra verticalmente el contenido del login */
-            justify-content: center; /* Centra horizontalmente el contenido del login */
-            background-color: #ffffff; /* Fondo blanco para el panel de login */
-            padding: 40px; /* Relleno interno */
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05); /* Sombra sutil a la izquierda */
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
         .login-content {
             width: 100%;
-            max-width: 420px; /* Ancho máximo para el contenido del formulario */
-            /* Si quieres un "card" dentro del right-panel, vuelve a poner background-color, padding, etc. */
-            background-color: #fff; /* Asegura el fondo blanco del card */
-            padding: 40px 30px; /* Padding del card */
-            border-radius: 16px; /* Bordes redondeados del card */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* Sombra del card */
+            max-width: 420px;
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
         .logo {
             display: block;
-            max-width: 70px; /* Tamaño del logo */
-            margin: 0 auto 20px; /* Centra el logo y añade margen inferior */
+            max-width: 70px;
+            margin: 0 auto 20px;
         }
 
         h2 {
             font-weight: 600;
             margin-bottom: 10px;
-            color: #333; /* Color de texto para el título */
         }
 
         p {
-            color: #6c757d; /* Color de texto para el subtítulo */
-            margin-bottom: 30px; /* Espacio debajo del subtítulo */
+            color: #6c757d;
         }
 
         .form-control {
             height: 48px;
             border-radius: 12px;
             font-size: 16px;
-            border: 1px solid #ced4da; /* Borde estándar de Bootstrap */
-        }
-        .form-control:focus {
-            border-color: #80bdff; /* Borde azul al enfocar */
-            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Sombra de enfoque */
         }
 
         .btn-primary {
@@ -97,45 +88,25 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
             border-radius: 12px;
             font-weight: 600;
             font-size: 16px;
-            background-color: #0069d9; /* Azul de Bootstrap */
+            background-color: #0069d9;
             border: none;
-            transition: background-color 0.2s ease; /* Transición suave al pasar el ratón */
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+            background-color: #0056b3;
         }
 
         .error-message {
-            color: #dc3545; /* Rojo de error */
+            color: #dc3545;
             margin-top: 15px;
             text-align: center;
             font-weight: 500;
-        }
-
-        /* Media Queries para responsividad */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column; /* Apilar en pantallas pequeñas */
-            }
-            .carousel-container {
-                flex: none; /* Desactivar flex-grow */
-                height: 250px; /* Altura fija para el carrusel en móvil */
-                width: 100%;
-            }
-            .right-panel {
-                flex: none; /* Desactivar flex-grow */
-                width: 100%;
-                padding: 30px 20px;
-            }
-            .login-content {
-                max-width: 100%;
-            }
         }
     </style>
 </head>
 <body>
 
+<!-- Carrusel de imágenes -->
 <div class="carousel-container">
     <div id="carouselLogin" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -152,13 +123,15 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
     </div>
 </div>
 
+<!-- Panel de login -->
 <div class="right-panel">
     <div class="login-content">
-        <img src="images/Logo.png" alt="Logo de la Empresa" class="logo">
+        <img src="images/Logo.png" alt="Logo" class="logo">
         <h2 class="text-center">Bienvenido</h2>
         <p class="text-center mb-4">Sistema de Capital Humano</p>
 
-        <form action="login.php" method="post"> <div class="form-group mb-3">
+        <form action="login.php" method="post">
+            <div class="form-group mb-3">
                 <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required>
             </div>
             <div class="form-group mb-4">
@@ -174,18 +147,18 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
     </div>
 </div>
 
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Carrusel automático -->
 <script>
     const carousel = document.querySelector('#carouselLogin');
-    if (carousel) { // Asegurarse de que el carrusel existe
-        new bootstrap.Carousel(carousel, {
-            interval: 3500, // Tiempo entre slides
-            ride: 'carousel', // Iniciar automáticamente
-            pause: false, // No pausar al pasar el ratón
-            wrap: true // Volver al inicio al llegar al final
-        });
-    }
+    new bootstrap.Carousel(carousel, {
+        interval: 3500,
+        ride: 'carousel',
+        pause: false,
+        wrap: true
+    });
 </script>
 </body>
 </html>

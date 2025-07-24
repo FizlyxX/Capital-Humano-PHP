@@ -116,6 +116,7 @@ mysqli_close($link);
                         <p><span class="detail-label">Teléfono:</span> <?php echo htmlspecialchars($colaborador['telefono'] ?? ''); ?></p>
                         <p><span class="detail-label">Celular:</span> <?php echo htmlspecialchars($colaborador['celular'] ?? ''); ?></p>
                         <p><span class="detail-label">Dirección:</span> <?php echo nl2br(htmlspecialchars($colaborador['direccion'] ?? '')); ?></p>
+                        <p><span class="detail-label">Fecha de ingreso:</span> <?php echo nl2br(htmlspecialchars($colaborador['fecha_ingreso'] ?? '')); ?></p>
                         
                         <?php if (!empty($colaborador['ruta_historial_academico_pdf'])): ?>
                             <?php

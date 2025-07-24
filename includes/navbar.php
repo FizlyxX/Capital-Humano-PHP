@@ -6,7 +6,7 @@ require_once __DIR__ . '/../usuarios/funciones.php';
 $current_user_is_admin = esAdministrador();
 $current_user_is_rrhh = esRRHH(); 
 
-$base_url = '/Proyecto_php/'; // ¡AJUSTA ESTA LÍNEA A LA RUTA BASE DE TU PROYECTO!
+$base_url = '/Capital-Humano-PHP/'; // ¡AJUSTA ESTA LÍNEA A LA RUTA BASE DE TU PROYECTO!
 
 // $current_page debe ser definida en el archivo que incluye navbar.php (ej. home.php, usuarios/index.php)
 // Si $current_page no está definida, se inicializa para evitar errores
@@ -49,7 +49,7 @@ if (!isset($current_page)) {
                     <a class="nav-link" href="#">Reportes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Vacaciones</a>
+                    <a class="nav-link <?php echo ($current_page == 'vacaciones') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>vacaciones/vacacionesView.php">Vacaciones</a>
                 </li>
 
             </ul>
