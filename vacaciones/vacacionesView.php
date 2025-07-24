@@ -213,9 +213,6 @@ if (isset($_GET['msg'])) {
                                 </div>
                             </div>
 
-
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script>
                                 const form<?= $colaborador_id ?> = document.getElementById("formVacaciones<?= $colaborador_id ?>");
                                 const inicio<?= $colaborador_id ?> = document.getElementById("inicio<?= $colaborador_id ?>");
@@ -240,57 +237,88 @@ if (isset($_GET['msg'])) {
                                 dias<?= $colaborador_id ?>.addEventListener("input", calcularFechaFin);
 
                                 form<?= $colaborador_id ?>.addEventListener("submit", function (e) {
+                                    e.preventDefault(); // PREVENT por defecto
+
+                                    calcularFechaFin(); // ← Esto fuerza a calcular y llenar la fecha fin en el input
+
                                     const hoy = new Date().toISOString().split('T')[0];
                                     const fechaInicio = inicio<?= $colaborador_id ?>.value;
                                     const diasTomar = parseInt(dias<?= $colaborador_id ?>.value);
+                                    const fechaFin = fin<?= $colaborador_id ?>.value;
 
+                                    const formData = new FormData(this);
+                                    formData.set("fecha_fin", fechaFin); // IMPORTANTE: aseguramos que el campo exista en el FormData
+
+                                    // Validaciones antes de fetch
                                     if (fechaInicio <= hoy) {
-                                        e.preventDefault();
                                         Swal.fire({
                                             icon: 'warning',
                                             title: 'Fecha inválida',
-                                            text: 'La fecha de inicio debe ser posterior a hoy',
-                                            showConfirmButton: true,
-                                            confirmButtonColor: '#d33'
+                                            text: 'La fecha de inicio debe ser posterior a hoy'
                                         });
-                                    } else if (isNaN(diasTomar) || diasTomar < 7) {
-                                        e.preventDefault();
+                                        return;
+                                    }
+
+                                    if (isNaN(diasTomar) || diasTomar < 7) {
                                         Swal.fire({
                                             icon: 'warning',
                                             title: 'Días insuficientes',
-                                            text: 'Debes solicitar al menos 7 días',
-                                            showConfirmButton: true,
-                                            confirmButtonColor: '#f0ad4e'
+                                            text: 'Debes solicitar al menos 7 días'
                                         });
-                                    } else if (diasTomar > disponibles<?= $colaborador_id ?>) {
-                                        e.preventDefault();
+                                        return;
+                                    }
+
+                                    if (diasTomar > disponibles<?= $colaborador_id ?>) {
                                         Swal.fire({
                                             icon: 'error',
                                             title: 'Exceso de días',
-                                            text: 'No tienes suficientes días disponibles',
-                                            showConfirmButton: true,
-                                            confirmButtonColor: '#d33'
+                                            text: 'No tienes suficientes días disponibles'
                                         });
-                                    }else {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Registro exitoso',
-                                            text: 'Registro exitoso de vacaciones.',
-                                            showConfirmButton: true,
-                                            confirmButtonColor: '#d33'
-                                        });
-                                        setTimeout(() => {
-                                            form<?= $colaborador_id ?>.reset();
-                                            fin<?= $colaborador_id ?>.value = '';
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("modalVacaciones<?= $colaborador_id ?>"))
-                                            // Cierra y limpia backdrop si quedó colgado
-                                            modal.hide();
-                                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                                            document.body.classList.remove('modal-open');
-                                            document.body.style = '';
-                                        }, 300);
-
+                                        return;
                                     }
+
+                                    // Enviar con fetch
+                                    fetch("verificar_traslape.php", {
+                                        method: "POST",
+                                        body: formData
+                                    })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.status) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Registro exitoso',
+                                                    text: 'Vacaciones registradas correctamente.'
+                                                });
+
+                                                form<?= $colaborador_id ?>.reset();
+                                                fin<?= $colaborador_id ?>.value = '';
+                                                const modal = bootstrap.Modal.getInstance(document.getElementById("modalVacaciones<?= $colaborador_id ?>"));
+                                                modal.hide();
+                                                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                                                document.body.classList.remove('modal-open');
+                                                document.body.style = '';
+                                            } else if (data.error === 'traslape') {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Conflicto de fechas',
+                                                    text: 'Ya existe una solicitud en ese rango.'
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error',
+                                                    text: 'No se pudo registrar la solicitud.'
+                                                });
+                                            }
+                                        })
+                                        .catch(err => {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error de conexión',
+                                                text: 'No se pudo conectar con el servidor.'
+                                            });
+                                        });
                                 });
                             </script>
                         </td>
@@ -322,6 +350,8 @@ if (class_exists('Footer')) {
 }
 ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
     </html><?php

@@ -9,10 +9,36 @@ class Vacaciones {
     }
 
     public function registrar($colaborador_id, $inicio, $fin) {
+
+        if ($this->existeTraslape($colaborador_id, $inicio, $fin)) {
+            return ['status' => false, 'error' => 'traslape'];
+        }
+        // 1. Insertar nueva solicitud de vacaciones
         $stmt = $this->conn->prepare("INSERT INTO vacaciones (colaborador_id, fecha_inicio, fecha_fin) VALUES (?, ?, ?)");
         $stmt->bind_param("iss", $colaborador_id, $inicio, $fin);
-        return $stmt->execute();
+
+        if (!$stmt->execute()) {
+            return ['status' => false, 'error' => 'insert_error'];
+        }
+        $stmt->close();
+
+        $fecha_actual = date('Y-m-d H:i:s');
+        if ($inicio == $fecha_actual){
+            $estado_id = 1;
+            // 2. Actualizar estado de colaborador a vacaciones
+            $update = $this->conn->prepare("UPDATE colaboradores SET estatus_id = ? WHERE id_colaborador = ?");
+            $update->bind_param("ii", $estado_id, $colaborador_id);
+
+            if (!$update->execute()) {
+                return false; // Error en el update
+            }
+
+            $update->close();
+        }
+
+        return ['status' => true];
     }
+
 
     public function obtenerDiasDisponibles($colaborador_id) {
         $stmt = $this->conn->prepare("SELECT fecha_ingreso FROM colaboradores WHERE id_colaborador = ?");

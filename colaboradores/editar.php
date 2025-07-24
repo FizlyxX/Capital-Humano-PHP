@@ -18,10 +18,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdmin
 $id_colaborador = $primer_nombre = $segundo_nombre = $primer_apellido = $segundo_apellido = "";
 $sexo = $identificacion = $fecha_nacimiento = $correo_personal = "";
 $telefono = $celular = $direccion = "";
-$fecha_ingreso = "";
+$fecha_ingreso = ""; $estatus = "";
 $primer_nombre_err = $primer_apellido_err = $sexo_err = $identificacion_err = $fecha_nacimiento_err = "";
 $correo_personal_err = $telefono_err = $celular_err = $direccion_err = "";
-$fecha_ingreso_err = "";
+$fecha_ingreso_err = ""; $estatus_err = "";
 $foto_perfil_err = $historial_academico_pdf_err = "";
 $current_foto_path = ''; // Para la URL de la miniatura a mostrar en el HTML
 $current_pdf_path = '';  // Para la URL del PDF a mostrar en el HTML
@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $celular = trim($_POST['celular']);
     $direccion = trim($_POST['direccion']);
     $fecha_ingreso = trim($_POST['fecha_ingreso']);
+    $estatus = trim($_POST['estatus']);
 
     // 2. Validar datos de texto
     if (empty($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
@@ -80,7 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'telefono' => $telefono,
             'celular' => $celular,
             'direccion' => $direccion,
-            'fecha_ingreso' => $fecha_ingreso
+            'fecha_ingreso' => $fecha_ingreso,
+            'estatus_id' => $estatus
         ];
 
         // Llamar a la función para actualizar el colaborador, que también maneja las subidas de archivos
@@ -129,6 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $telefono = $colaborador_data['telefono'] ?? '';
             $celular = $colaborador_data['celular'] ?? '';
             $direccion = $colaborador_data['direccion'] ?? '';
+            $fecha_ingreso = $colaborador_data['fecha_ingreso'] ?? '';
+            $estatus = $colaborador_data['estatus_id'] ?? '';
             
             // Rutas de archivos obtenidas directamente de la base de datos (con coalesce para NULL)
             $current_foto_path_from_db = $colaborador_data['ruta_foto_perfil'] ?? ''; 
@@ -289,13 +293,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <textarea name="direccion" id="direccion" class="form-control" rows="3"><?php echo htmlspecialchars($direccion); ?></textarea>
             </div>
 
-            <div class="col-md-4">
-                <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
-                    <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
-                    <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>
-                    <span class="invalid-feedback text-danger"><?php echo $fecha_ingreso_err; ?></span>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
+                        <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
+                        <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>
+                        <span class="invalid-feedback text-danger"><?php echo $fecha_ingreso_err; ?></span>
+                    </div>
                 </div>
-            </div>
+                <div class="col-md-3">
+                    <div class="mb-3 <?php echo (!empty($estatus_err)) ? 'has-error' : ''; ?>">
+                        <label for="estatus" class="form-label">Estatus:</label>
+                        <select name="estatus" id="estatus" class="form-select" required>
+                            <option value="">Seleccione</option>
+                            <option value="1" <?php echo ($estatus == 1) ? 'selected' : ''; ?>>Vacaciones</option>
+                            <option value="2" <?php echo ($estatus == 2) ? 'selected' : ''; ?>>Licencia</option>
+                            <option value="3" <?php echo ($estatus == 3) ? 'selected' : ''; ?>>Incapacitado</option>
+                            <option value="4" <?php echo ($estatus == 4) ? 'selected' : ''; ?>>Trabajando</option>
+                        </select>
+                        <span class="invalid-feedback text-danger"><?php echo $estatus_err; ?></span>
+                    </div>
+                </div>
+
+            </div>>
 
             <div class="row">
                 <div class="col-md-6">

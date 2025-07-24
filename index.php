@@ -27,21 +27,25 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
 
         body {
             display: flex;
+            flex-direction: row; /* Asegura orientación horizontal */
             height: 100vh;
             margin: 0;
             background-color: #f0f2f5;
         }
 
-        .carousel-container {
-            flex: 1;
-            overflow: hidden;
+        .carousel-container,
+        .right-panel {
+            flex: 1 1 2.5%; /* Ambas mitades se reparten el espacio */
+            min-width: 0; /* Previene overflow inesperado */
         }
 
         .carousel-item img {
             object-fit: cover;
             height: 100vh;
             width: 100%;
+            display: block;
         }
+
 
         .right-panel {
             flex: 1;
@@ -90,10 +94,19 @@ if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
             font-size: 16px;
             background-color: #0069d9;
             border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 105, 217, 0.3);
         }
 
         .btn-primary:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(0, 86, 179, 0.2);
         }
 
         .error-message {

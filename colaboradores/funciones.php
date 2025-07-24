@@ -281,15 +281,15 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
     }
     $ruta_historial_academico_pdf = $pdf_result['success'];
 
-    $sql = "INSERT INTO colaboradores (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, sexo, identificacion, fecha_nacimiento, correo_personal, telefono, celular, direccion, ruta_foto_perfil, ruta_historial_academico_pdf, fecha_ingreso, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+    $sql = "INSERT INTO colaboradores (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, sexo, identificacion, fecha_nacimiento, correo_personal, telefono, celular, direccion, ruta_foto_perfil, ruta_historial_academico_pdf, fecha_ingreso, estatus_id, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
     
     if ($stmt = mysqli_prepare($link, $sql)) {
-        mysqli_stmt_bind_param($stmt, "ssssssssssssss", // Son 13 's' para 13 variables
+        mysqli_stmt_bind_param($stmt, "ssssssssssssssi", // Son 13 's' para 13 variables
             $data['primer_nombre'], $data['segundo_nombre'], $data['primer_apellido'],
             $data['segundo_apellido'], $data['sexo'], $data['identificacion'],
             $data['fecha_nacimiento'], $data['correo_personal'], $data['telefono'],
             $data['celular'], $data['direccion'], $ruta_foto_perfil,
-            $ruta_historial_academico_pdf, $data['fecha_ingreso']
+            $ruta_historial_academico_pdf, $data['fecha_ingreso'], $data['estatus_id']
         );
 
         if (mysqli_stmt_execute($stmt)) {
@@ -360,16 +360,16 @@ function actualizarColaborador($link, $id_colaborador, $data, $foto_file_input_n
                 primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?,
                 sexo = ?, identificacion = ?, fecha_nacimiento = ?, correo_personal = ?,
                 telefono = ?, celular = ?, direccion = ?, ruta_foto_perfil = ?,
-                ruta_historial_academico_pdf = ?, fecha_ingreso = ?
+                ruta_historial_academico_pdf = ?, fecha_ingreso = ?, estatus_id = ?
             WHERE id_colaborador = ?";
     
     if ($stmt = mysqli_prepare($link, $sql)) {
-        mysqli_stmt_bind_param($stmt, "ssssssssssssssi",
+        mysqli_stmt_bind_param($stmt, "ssssssssssssssii",
             $data['primer_nombre'], $data['segundo_nombre'], $data['primer_apellido'],
             $data['segundo_apellido'], $data['sexo'], $data['identificacion'],
             $data['fecha_nacimiento'], $data['correo_personal'], $data['telefono'],
             $data['celular'], $data['direccion'], $ruta_foto_perfil,
-            $ruta_historial_academico_pdf, $data['fecha_ingreso'] , $id_colaborador
+            $ruta_historial_academico_pdf, $data['fecha_ingreso'], $data['estatus_id'] , $id_colaborador
         );
 
         if (mysqli_stmt_execute($stmt)) {
