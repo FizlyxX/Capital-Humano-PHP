@@ -2,14 +2,11 @@
 
 require_once __DIR__ . '/../usuarios/funciones.php'; 
 
-// Definir el estado de administrador una vez para usarlo en las condiciones
 $current_user_is_admin = esAdministrador();
 $current_user_is_rrhh = esRRHH(); 
 
-$base_url = '/Capital-Humano-PHP/'; // ¡AJUSTA ESTA LÍNEA A LA RUTA BASE DE TU PROYECTO!
+$base_url = '/Capital-Humano-PHP/'; 
 
-// $current_page debe ser definida en el archivo que incluye navbar.php (ej. home.php, usuarios/index.php)
-// Si $current_page no está definida, se inicializa para evitar errores
 if (!isset($current_page)) {
     $current_page = '';
 }
@@ -29,31 +26,30 @@ if (!isset($current_page)) {
 
                 <?php if ($current_user_is_admin): ?>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'usuarios') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>usuarios/index.php">Módulo de Usuarios</a>
+                    <a class="nav-link <?php echo ($current_page == 'usuarios') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>usuarios/index.php">Usuarios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'roles') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>roles/index.php">Módulo de Roles</a>
-                </li>
-                <?php endif; ?>
-
-                <?php if ($current_user_is_admin || $current_user_is_rrhh): // <-- NUEVA CONDICIÓN PARA COLABORADORES ?>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'colaboradores') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>colaboradores/index.php">Módulo de Colaboradores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'estadisticas') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/estadisticas.php">Módulo de Estadísticas</a>
+                    <a class="nav-link <?php echo ($current_page == 'roles') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>roles/index.php">Roles</a>
                 </li>
                 <?php endif; ?>
 
+                <?php if ($current_user_is_admin || $current_user_is_rrhh): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Módulo de Cargos</a>
+                    <a class="nav-link <?php echo ($current_page == 'colaboradores') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>colaboradores/index.php">Colaboradores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'cargos') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>cargos/index.php">Cargos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Reportes</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'estadisticas') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>estadisticas/estadisticas.php">Estadísticas</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'vacaciones') ? 'active' : ''; ?>" href="<?php echo $base_url; ?>vacaciones/vacacionesView.php">Vacaciones</a>
                 </li>
+                <?php endif; ?>
 
             </ul>
             <ul class="navbar-nav ms-auto">
