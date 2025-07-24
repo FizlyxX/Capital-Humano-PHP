@@ -108,15 +108,15 @@ mysqli_close($link);
                                     <?php 
                                         // Preparar los datos tal como fueron firmados para verificar
                                         $data_for_verification = [
-                                            'id_colaborador' => $cargo['id_colaborador'],
-                                            'id_departamento' => $cargo['id_departamento'],
-                                            'id_ocupacion' => $cargo['id_ocupacion'],
+                                            'id_colaborador' => strval($cargo['id_colaborador']),
+                                            'id_departamento' => strval($cargo['id_departamento']),
+                                            'id_ocupacion' => strval($cargo['id_ocupacion']),
                                             'sueldo' => (float)($cargo['sueldo'] ?? 0),
                                             'fecha_contratacion' => $cargo['fecha_contratacion'],
                                             'tipo_colaborador' => $cargo['tipo_colaborador'],
                                             'timestamp' => $cargo['fecha_firma']
                                         ];
-                                        
+
                                         // Verificar si hay firma y si es válida
                                         if (!empty($cargo['firma_datos']) && verificarFirmaCargo($data_for_verification, $cargo['firma_datos'])) {
                                             echo '<span class="badge bg-success">Firmado OK</span>';
