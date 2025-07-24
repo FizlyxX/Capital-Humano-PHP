@@ -153,7 +153,7 @@ mysqli_close($link);
             <a href="cargos/crear.php" class="btn btn-info btn-lg">Asignar Nuevo Cargo</a>
             <?php endif; ?>
             <?php if ($current_user_is_admin || $current_user_is_rrhh): // Reportes y Estadísticas para Admins/RRHH ?>
-            <a href="reportes/index.php" class="btn btn-primary btn-lg me-md-2">Ver Reportes</a>
+            <a href="reportes/colaboradores_sueldos.php" class="btn btn-primary btn-lg me-md-2">Ver Reportes</a>
             <a href="estadisticas/estadisticas.php" class="btn btn-secondary btn-lg">Ver Estadísticas</a> <?php endif; ?>
             <?php if ($current_user_is_admin): // Gestión de Usuarios solo para Admin ?>
             <a href="usuarios/index.php" class="btn btn-dark btn-lg">Gestión de Usuarios</a>
