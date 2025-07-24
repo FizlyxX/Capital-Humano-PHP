@@ -1,14 +1,14 @@
 <?php
 
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../usuarios/funciones.php'; 
-require_once __DIR__ . '/../colaboradores/funciones.php'; 
+require_once __DIR__ . '/../usuarios/funciones.php';
+require_once __DIR__ . '/../colaboradores/funciones.php';
 
 // --- Constantes para OpenSSL ---
-define('PRIVATE_KEY_PATH', __DIR__ . '/../keys/private_key.pem'); 
-define('PUBLIC_KEY_PATH', __DIR__ . '/../keys/public_key.pem'); 
+define('PRIVATE_KEY_PATH', __DIR__ . '/../keys/private_key.pem');
+define('PUBLIC_KEY_PATH', __DIR__ . '/../keys/public_key.pem');
 
-define('PRIVATE_KEY_PASSPHRASE', 'melon17'); 
+define('PRIVATE_KEY_PASSPHRASE', 'melon17');
 
 // --- Funciones para Departamentos ---
 function getDepartamentos($link) {
@@ -48,14 +48,14 @@ function firmarDatosCargo($data_to_sign) {
     }
 
     // Cargar la clave privada usando la PASSPHRASE
-    $private_key = openssl_pkey_get_private(file_get_contents(PRIVATE_KEY_PATH), PRIVATE_KEY_PASSPHRASE); 
+    $private_key = openssl_pkey_get_private(file_get_contents(PRIVATE_KEY_PATH), PRIVATE_KEY_PASSPHRASE);
     if (!$private_key) {
         error_log("Failed to load private key: " . openssl_error_string());
         return false;
     }
 
-    $serialized_data = json_encode($data_to_sign); 
-    
+    $serialized_data = json_encode($data_to_sign);
+
     // Firmar los datos.
     if (!openssl_sign($serialized_data, $signature, $private_key, OPENSSL_ALGO_SHA256)) {
         error_log("Failed to sign data: " . openssl_error_string());
@@ -92,22 +92,32 @@ function verificarFirmaCargo($data_to_verify, $signature_b64) {
 // --- Funciones CRUD para Cargos ---
 
 /**
- * Obtiene todos los cargos actualmente activos de los colaboradores activos.
+ * Obtiene cargos.
+ *
+ * @param mysqli $link La conexión a la base de datos.
+ * @param bool $mostrarSoloInactivosColaboradores Si es true, filtra por colaboradores con activo = 0. Si es false, filtra por colaboradores con activo = 1.
+ * @return array Una lista de cargos.
  */
-function getCargosActivos($link) {
+function getCargos($link, $mostrarSoloInactivosColaboradores = false) {
     $cargos = [];
-    // AÑADIDO: c.id_departamento y c.id_ocupacion a la selección explícita
-    $sql = "SELECT c.id_cargo, c.id_colaborador, c.id_departamento, c.id_ocupacion, CONCAT(col.primer_nombre, ' ', col.segundo_nombre, ' ', col.primer_apellido, ' ', col.segundo_apellido) AS nombre_colaborador, 
-                   d.nombre_departamento, o.nombre_ocupacion, 
-                   c.sueldo, c.fecha_contratacion, 
+    $sql = "SELECT c.id_cargo, c.id_colaborador, c.id_departamento, c.id_ocupacion, CONCAT(col.primer_nombre, ' ', col.segundo_nombre, ' ', col.primer_apellido, ' ', col.segundo_apellido) AS nombre_colaborador,
+                   d.nombre_departamento, o.nombre_ocupacion,
+                   c.sueldo, c.fecha_contratacion,
                    c.tipo_colaborador, c.activo_en_cargo, c.firma_datos, c.fecha_firma
             FROM cargos c
             JOIN colaboradores col ON c.id_colaborador = col.id_colaborador
-            JOIN departamentos d ON c.id_departamento = d.id_departamento 
-            JOIN ocupaciones o ON c.id_ocupacion = o.id_ocupacion 
-            WHERE c.activo_en_cargo = TRUE AND col.activo = TRUE /* Solo cargos activos de colaboradores activos */
-            ORDER BY nombre_colaborador ASC, c.fecha_contratacion DESC";
-    
+            JOIN departamentos d ON c.id_departamento = d.id_departamento
+            JOIN ocupaciones o ON c.id_ocupacion = o.id_ocupacion
+            WHERE c.activo_en_cargo = TRUE"; // Siempre muestra solo los cargos actuales
+
+    if ($mostrarSoloInactivosColaboradores) {
+        $sql .= " AND col.activo = FALSE"; // Agrega la condición para colaboradores inactivos
+    } else {
+        $sql .= " AND col.activo = TRUE"; // Agrega la condición para colaboradores activos
+    }
+
+    $sql .= " ORDER BY nombre_colaborador ASC, c.fecha_contratacion DESC";
+
     if ($result = mysqli_query($link, $sql)) {
         while ($row = mysqli_fetch_assoc($result)) {
             $cargos[] = $row;
@@ -116,6 +126,7 @@ function getCargosActivos($link) {
     }
     return $cargos;
 }
+
 
 /**
  * Obtiene el historial completo de cargos para un colaborador específico.

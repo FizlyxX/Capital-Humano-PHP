@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 24, 2025 at 09:51 AM
+-- Generation Time: Jul 24, 2025 at 08:50 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cargos` (
   KEY `id_colaborador` (`id_colaborador`),
   KEY `id_departamento` (`id_departamento`),
   KEY `id_ocupacion` (`id_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `cargos`
@@ -51,11 +51,22 @@ CREATE TABLE IF NOT EXISTS `cargos` (
 
 INSERT INTO `cargos` (`id_cargo`, `id_colaborador`, `id_departamento`, `id_ocupacion`, `sueldo`, `fecha_contratacion`, `tipo_colaborador`, `activo_en_cargo`, `firma_datos`, `fecha_firma`) VALUES
 (1, 1, 3, 1, 2100.00, '2020-01-10', 'Permanente', 0, 'LXT3bHjY9dWE5urxK1GGnE5vRttmMi1OvVcm9X10TLT8K3aX9Sb9Fo+NK4Sr22tq5YtIJRO64N4ZxMjphvNSLz1GToZQlvWMvYUEotdqYy2sjmlN2OoK23IHuL/Pua1+eJST0it2q6vA7T95tGWKjqE30yXZDFCsqIwDwvZao3PQgacAtnnXQDrlAkIu4HB0uglnW5Wddx1+p4mg66+rU6wWJNkUO2AHaiBLjTo8BzdKCW+vfOhy0S5gNeZDQeJQsf71etLdtgU9SYcEyZkniMwu+rIvay7k8o5GvsGn68VN6FvQqfd5ChkwF8JIkxMxJ1/2Lf5cg9bKjn8D64XXIQ==', '2025-07-24 09:27:58'),
-(2, 2, 1, 4, 1750.00, '2021-03-15', 'Permanente', 1, 'oQbt1BtZCzqsA+EWbfa/toP+3XBtGjXt9soiTe6TL7M8Ijl644EMgy0zbgWG97PzobCA1iHkukiOxe0VTXQrLLNDDwMD0ykzwYj1WJNe5Aayvx8e0ZKZjgfBMOe1zur1u+5wdZxMgYtXlxlQwgoUNfj/VRk0p6JOgh6iic+dIoeblpFKf+LYL/KJsA88a20yhtasocGNiQfXzWcvdYURlIecOyk2acyuiOPSRtP4V6ftg5k0PnDrrlJCB53NSMedce+yAVefazEknTRjBujsLGQ8xm2pSzG/+V34IY14j2wLgpMofy4z8c7oBqEiZf6NCDuY2r6ERcprTnVucmDCwQ==', '2025-07-24 09:36:05'),
+(2, 2, 1, 4, 1750.00, '2021-03-15', 'Permanente', 0, 'oQbt1BtZCzqsA+EWbfa/toP+3XBtGjXt9soiTe6TL7M8Ijl644EMgy0zbgWG97PzobCA1iHkukiOxe0VTXQrLLNDDwMD0ykzwYj1WJNe5Aayvx8e0ZKZjgfBMOe1zur1u+5wdZxMgYtXlxlQwgoUNfj/VRk0p6JOgh6iic+dIoeblpFKf+LYL/KJsA88a20yhtasocGNiQfXzWcvdYURlIecOyk2acyuiOPSRtP4V6ftg5k0PnDrrlJCB53NSMedce+yAVefazEknTRjBujsLGQ8xm2pSzG/+V34IY14j2wLgpMofy4z8c7oBqEiZf6NCDuY2r6ERcprTnVucmDCwQ==', '2025-07-24 09:36:05'),
 (3, 4, 2, 3, 1650.00, '2023-12-04', 'Permanente', 1, 'oSj7cM/DZqdU14Xg5xJDowT9vHrbaEtiYcts+IJZ7jj28xWTHgnI9kSlF3LxJiNkwby4DmjRIHPXkgWnT1UZofCLSR518z2deLdMagz28vSFH/vsHs7pP8ilkiMNTVEK2tCVqf8spxBD96qHiVkzr7uVOsZlu4FNJC9s9zwADwYUmq/DH1kyKXuipRvNgXZez8U7+BIV6bDAp8bV/h0PaQ5OcY0xiFgWd/n08LOs/fhLEjo/3aiDmZBh97xWzEEoslsKgKv1SgVjdAnNTkwgvBs3B44glCgpW9VTTXJP9xZf+eALU4wqa/QreyOYoRN6Ctm9eQyekHdrBhs4dxmpiA==', '2025-07-24 09:40:05'),
 (4, 5, 4, 2, 1400.00, '2022-01-10', 'Eventual', 1, 'VyZgj/E1W/p0slVWQUJvFPIIttKOVKWe33pAfVLRG/JNyYBXn+Px5FbwMLT2rZLjsVgN0lVxaAvydVlRV7VgRwou1Csp5v7GwCsE84P6VUpvBR849wGwXKdCSCieMvLEN1BenMWZch8pEM2YpyVGsI8Z5v1G4t//2kOu5W7BfwZq6sXLdcTqz07H/Ogirnlp41SbU93rOiBZ4QdYB5KMSSjwtDcDBaflrXcH6TAwZFQhlAKzlYJtYrJe8+HPY9GGrLlj//bE0i2BC6QabMGcY1QgDOwCyqIHJzJm/Tt70D88H08DjHshjpLbehfesjKEtFAjqeubQZvee5I5LIIL3A==', '2025-07-24 09:41:28'),
 (5, 9, 1, 4, 1800.00, '2018-12-05', 'Permanente', 1, 'SW1SC0xMW/P3QwWDiNTyBaLGX9lzYyVkL2KFb8mThaKTGTnSFCuTo7jm5dTyvZFmqpR6zpTbIzdmLk4Cnc60IIlHfaexF4DSm09cq69EriOnXCI+zgpViYZWzkeJXcqUJ/kD16GI7J/T2sr370ToUfw5ldBzi7XXVVlG37XtZyUdU9lcdeFh4KiZMUCEz68qOIP1fR/u1edGYHIrta8w74dp6+FFqubSC+jAsKR0HrE2YiwsZD/YaoHLEnb/CVnqhkRvRv34Q42WvH2wFZ4AV+11UVgpGl3wbwTqZ0GnlcfdiXdBaKzdapLx8gcPWU6HONHyW2cMivvfbtX7LmK0sg==', '2025-07-24 09:42:50'),
-(6, 1, 3, 5, 2800.00, '2022-04-14', 'Permanente', 1, 'qWZfBpNJGorLtpDxDynp8IZkPqsm0VkFoAvMr3f8mG05yGCQ2O2mCUtXhhaL+or5J0n7W7cC4xNCZAzfpLsFS6KETae4y2y1Ki+rE6rBc4SYR1FKOJlBlP4qriKcIcdCorg7e5vkZxUsMTBNFeeQn4ZkJqdnOFDubYbbF2NjwhdoL36z/Um3LoPZWzl7yr9jctKgv+HRchXrnzYPyB3kmyFV1AwK6z+LKWYckQ9qpiOqJ9mQvZe84oOqsTqQc8PvXYw1CHx9IDOaHEbWvxNqb5RDIwzU0/OL3hpzFcyIsJewcl0k8Mni0AzjXmIpSgCu7VBuqMxadSMDogmxVRABFQ==', '2025-07-24 09:50:11');
+(6, 1, 3, 5, 2800.00, '2022-04-14', 'Permanente', 1, 'qWZfBpNJGorLtpDxDynp8IZkPqsm0VkFoAvMr3f8mG05yGCQ2O2mCUtXhhaL+or5J0n7W7cC4xNCZAzfpLsFS6KETae4y2y1Ki+rE6rBc4SYR1FKOJlBlP4qriKcIcdCorg7e5vkZxUsMTBNFeeQn4ZkJqdnOFDubYbbF2NjwhdoL36z/Um3LoPZWzl7yr9jctKgv+HRchXrnzYPyB3kmyFV1AwK6z+LKWYckQ9qpiOqJ9mQvZe84oOqsTqQc8PvXYw1CHx9IDOaHEbWvxNqb5RDIwzU0/OL3hpzFcyIsJewcl0k8Mni0AzjXmIpSgCu7VBuqMxadSMDogmxVRABFQ==', '2025-07-24 09:50:11'),
+(7, 2, 1, 11, 2240.00, '2022-05-26', 'Permanente', 0, 'WIToHOMbVJjfykVMwuJyfXxFRfwYpN/jiS3HtaTpijjWQFTnEr+0tE2/9/4lSIWIN7e2BLsLMU7RDTNBDrN1j4KzLmzFUul5a5i28+qPAJ9DsnzhMFnFOaOTU5vX9mRV5jMHQgR4Z6NZED1YnNojieSgwQxrPCETRwp5SerSmxBpKEAigxGRwQBrNupLiyLDxwM2ohrRGRBcArtg9NT0Adx7sKrcW6EWHjg6EaB5hmrDhkQ7PxUXc9xtZhdHoUSuLiZpmtsOHnxJyWByAdJlte9lBthxuK+tMoYfrEWgsHlMN7BFFEzmHrssbTlearKC27Kd96rbFUzZ5nVokuBRUQ==', '2025-07-24 09:59:38'),
+(8, 2, 1, 7, 3000.00, '2024-08-21', 'Permanente', 1, 'qHfVSrZDzyjRP/JLhxAqnjxIRhjvqZQaSexRjlhtaJQIQtusO9ADEQYwxb65Ekho+okHhj7x2Ut5JBmHI3Wtwlm1xzkgIpT1JXKMq3CUZhC+4AMU7aqIIOc2qNeMxY9Nqy9Tkzg9p8BBiV6sMWbRIsjohvY+tb34ST8E/JTFyo9F/ylEOfxlVhayQd0JHR7AdFWsZ17fRN8qzGD7+veGL4Z60YGmc81KMQARQGOgW3uxqlzXP2rL/LAfBbIRQ6yQYavtMYKqroRWUThqm8LPN1wVmT8UXD3UnuZZdvE2bn9cw6n76EMeeq+HP82xP2IUOQxfYVsJlU52f/bpdz+jTw==', '2025-07-24 10:00:55'),
+(9, 6, 4, 12, 2200.00, '2020-05-01', 'Permanente', 1, 'K+qFtYeXhtDlRJWiE8atmcsVHfIVKXMHEQQZc3GApKFZPzHa1NpjnA/+6GVDrzlhRX3IEjs4ZedPvC3RK8KulbdjyFY0ULlt01A41OMk1YqlWNUE5ZOuQMPULmF4p5LFVI6F0g+Be1QKSls38fGeW+AH0tfubvjNWNjjLW8YORcfpXH+BczKFIVDoB2P6qR8w729EfbyDl1gjS0sF6oYSNycxdmQLiC2lVvN0El6SHSjpoM+1QiNiPtycieW0ElhqwkGcnycI/TTbdF5l5xdT/H3x3YlwcHAtmXVXjC0XYF0ufwkRU8iAW13tXqlrurzT0WrSF8p3nA7ThlRVV42cA==', '2025-07-24 20:27:56'),
+(10, 7, 3, 1, 1850.00, '2020-07-15', 'Permanente', 0, 'CDQxqG61EjzITRPvE63dVOro6hDzP2+dEVPAOWyw9niVe9xgYVgHyUGqboWcVJyo/2qIEkxWiz/EM+430Nb/UQk9kDw4sRyETGwj+tQuMJWj88+Xvt8KgnwV7bQn5AYrA1vz70ZjUE6848rxnBKZM3h+tcgCR8ubs/5Jp7PLxdqu4sH+7DgKWk8SSutVnGQvcOfggCmQfjiIq40RTKWzXJJMRFr4LC9w1DX0XhKlYnDnR+Lh3KkBAVtlVz93ekJJXEw49Weqo2bAgX6BxGykgZuK+OZqHLA+CTJ+hyt6LcwBesF1iDiwJGnn/dCV6nXeLf4P+7y6Rrr/Y+DM94bknA==', '2025-07-24 19:47:13'),
+(11, 7, 3, 10, 2500.00, '2023-02-12', 'Permanente', 1, 'ihT1yH30v+FoH18OzDOEbBAg02165OaEKmJ+fBJGILMbXBbHnGb1j1yEs8w4jQjXJ2mgahZKR5btnsQgxVtU6A8j8BTa9RBoAJSkliOfMh4KnTTJbbFwSjCRZ6mhFXqv2OchplrZGqJVqZNlGIyhYpzWJkqTygCjdKuhoPUion2K4aPjFriXoqppuMNxq+1BJRcaaqLFT4pysHtMXZv4OmvgElKA4vnJB2X9hq5MPrb5TsUIolinKcoZezirjTk/0wjHUcdYMV8W+AWNVqLF+i852ZjG7/LVesttVVlNQu1+/oVX/NBkpTuOX5nb6xJBKm9+WKM7zC0KhypWvcH/rA==', '2025-07-24 19:48:22'),
+(12, 10, 1, 11, 2100.00, '2021-09-20', 'Permanente', 1, 'S0QjIZ4NO57WUMIUeVLpBX39eLGtzQng02M3agmv1yDkz+mqqsEkvfMjCm6pcMe45P5y1DT0rWOAperdXOgadDOtO6DWPnS8NEOtlEcmgeLQvGtwb3I++byiJBiGEWLBXKv/THELhCUqrNINNbS5mZu3+TcJbvdtN4tG4D6KpgT/rPuCk4yxhkgGjkhRMT3sxLYekv0vVa8nbKhdNwECrdQtszgnH7u+URk2qolynfvk7o5zSlz6uZBjnh4oGBAU1CgrNJ+3q4nCJnPAoizedsB+EqiyzfL7Te7W7YgvM9qEGUAWFmF+13DiAsdvci/e8+ZgLbVGMrvM/gc7BXWqMA==', '2025-07-24 19:49:53'),
+(13, 12, 4, 9, 2500.00, '2020-03-17', 'Permanente', 1, 'FtjW8Pvfsd023zE2D+FlvPzoLT9vEh1Ya00rjmeT9fO5msosEpurmw6Ls6Fq0HQCJouVpYgxGpGzUXLLmDs20vHrOXEeUmrTER/RkTiiwtnrxZgnTip8jjDwXPlIPbRCP8UARJUA7vPm1s0mwHcpItH+el+wUhABAohPtms97GY9p0R++nbEHnazzGqma6Hzeyv84VFeaApRg5tPUN3sEJZYp/q9ntuPZnR6r7rNTIri1+i3fhKFSV8L0woX+5jGwVfZM1ziTSqAeuaGUCP1dtQXVk1EUF5wewjFdE7de+rJEZZ+Jkr9SxQxst+zb9A+Tm+jnAkj3+0GgqLTBvQ32w==', '2025-07-24 20:27:40'),
+(14, 3, 2, 8, 2600.00, '2019-06-01', 'Permanente', 1, 'a0v/KktydDscDbtvGmCImwHtKKM13vGh1XRGeMn0BuP+lLqdlTchqj/iURopx+TsSCHkwpgYXsY1riv/druj+e6RhNVUJIV1A9wqjrOA0qVl/bGMpAe+4OF+7YvOXpvLLNN6KjUK0UaKjn+3lyAyDqGCE4C6L9do2BxAynnYneEf8r8e+XBhLKy1R62ZschBdXHkfutxMrYPhrcv6q1/0mDkJ/CN5NRIuN6ozHbbcq6hiBLW2otd3VMuqgGA+KBp/yO3XpAWSX7IMNqxx3RugYklF5l2PnSvc352aflSWErJg2ATfH3b4AOcrBHgncqxtPNYfPYqgzdn/cNDvraK5Q==', '2025-07-24 20:45:21'),
+(15, 8, 1, 4, 1300.00, '2023-08-01', 'Permanente', 0, 'UYDJqlMLYQosOerQsMVirpMJjQzaXjT64oCK4Ban5esFFVkwIysWRGv889Vqt9D6Zlr33jdN1TgIdbIn1NCXqoep5BkRWiQLzSueh0sDKRRb6CNncVhZ7Cbkqh91IqrG8xA6nlvJthd/MHbjZVaNOGPi9MKcMeR4NJfYnA4igq2iM1bdxeumxLajRb2qko6xJkmvD6w4HjG6EoV1at5KSxvL5v8X2G2b7qS3UFF4AQAzCiSy8jIEg8t+t3kv6kWYL8aCRaQ1xc9zuKmHteHNRdLFYTzdCcp+NxpTewnNyL0OVwQUCk8O+lIFhKulzfXdj0w5QFPFkUxcZP23YZheFQ==', '2025-07-24 20:47:14'),
+(16, 8, 1, 12, 2000.00, '2024-04-28', 'Permanente', 1, 'N9hNSavaUCDAUQ7fkb7Kxrmit8bx6jgoJamdFp6gMNxALrhqORqvnWAdLe3Jch6GFYlaghPluqG29RkNBNv+JfVaVi9f4eiZ62v6npfU4n4KqI1bcYxqctAnPLniI90Kk0y6OWKwHy7OClDDZi0846eoV72o814FYTLNThmnYo6OChf1jd0g57iHvEleuqiVBFSY+ipFSu3oJq2mZsbuf5kVp8ySPIuHpI3yGe4a3qT0iLZLkxwbCijUoxI9tzn+r6kBrOQm+AfiepQY/nrUAeh3Tm/tEsAHuinTj9FXBA6yGMadg0CODZjckgvdCFJCPBALOkyIpADJzOKC7ZjhxQ==', '2025-07-24 20:47:53'),
+(17, 11, 4, 5, 1800.00, '2022-10-10', 'Permanente', 1, 'DVBHGDlX3U3pKtfdU0He2txr1//psVJ0rmEq0L4Wn33KwaeYbbHPkTz5unH+1oeF81kuBxQAlNOusXPfC3vsWZx25FXU9WF+s1f7Px5aHZu7Jgt6pXjq+Uhaerl0V0HUke69bTd3dZ+iS2A4qGztAfajKP/wcVdpd8QSlORUpoMjXkMdjyWXwKojy7cCzlsfNeLD/VGDBhoLg3zr+1KWDKcAAlX198EuP3XtJaMEKDgdCbAOKnwi2gzb0WHdGS6BODhF2N4sRmF8OwCfIWyndyHyWowSatd/uYSIx9lVFFVA19ijM5iH4WcvxrSxWt2NhnXKS+slUTQLngcbi6NPtQ==', '2025-07-24 20:49:44');
 
 -- --------------------------------------------------------
 
@@ -87,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `colaboradores` (
   PRIMARY KEY (`id_colaborador`),
   UNIQUE KEY `identificacion` (`identificacion`),
   KEY `colaborador_fk` (`estatus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `colaboradores`
@@ -119,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   `nombre_departamento` varchar(100) NOT NULL,
   PRIMARY KEY (`id_departamento`),
   UNIQUE KEY `nombre_departamento` (`nombre_departamento`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `departamentos`
@@ -143,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `estatus_colaborador` (
   `estatus` enum('Vacaciones','Licencia','Incapacitado','Trabajando') NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `estatus_colaborador`
@@ -167,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `ocupaciones` (
   `nombre_ocupacion` varchar(100) NOT NULL,
   PRIMARY KEY (`id_ocupacion`),
   UNIQUE KEY `nombre_ocupacion` (`nombre_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `ocupaciones`
@@ -200,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `descripcion` text,
   PRIMARY KEY (`id_rol`),
   UNIQUE KEY `nombre_rol` (`nombre_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `roles`
@@ -227,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`),
   KEY `usuarios_rol_fk` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `usuarios`
@@ -253,7 +264,14 @@ CREATE TABLE IF NOT EXISTS `vacaciones` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `vacaciones_fk` (`colaborador_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4
+
+--
+-- Dumping data for table `vacaciones`
+--
+
+INSERT INTO `vacaciones` (`id`, `colaborador_id`, `fecha_inicio`, `fecha_fin`) VALUES
+(1, 7, '2025-07-30', '2025-08-09');
 
 --
 -- Constraints for dumped tables

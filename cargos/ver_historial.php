@@ -129,7 +129,6 @@ mysqli_close($link);
                                 </td>
                                 <td>
                                     <a href="editar.php?id_cargo=<?php echo $cargo['id_cargo']; ?>" class="btn btn-primary btn-sm">Editar</a>
-                                    <a href="eliminar.php?id_cargo=<?php echo $cargo['id_cargo']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este cargo? ¡Esto eliminará el registro de su historial! (No se puede eliminar un cargo activo)');">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
