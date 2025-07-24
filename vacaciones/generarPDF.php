@@ -1,26 +1,16 @@
 <?php
-global $link;
-require_once '../config.php';
 require_once 'Vacaciones.php';
-require_once '../TCPDF-main/tcpdf.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $colaborador_id = $_POST['colaborador_id'];
-    $inicio = $_POST['fecha_inicio'];
-    $fin = $_POST['fecha_fin'];
-    $dias = (new DateTime($inicio))->diff(new DateTime($fin))->days + 1;
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', 'errores.log');
 
-    $vac = new Vacaciones($link);
-    $disponibles = $vac->obtenerDiasDisponibles($colaborador_id);
-    $traslape = $vac->existeTraslape($colaborador_id, $inicio, $fin);
+function generarPDF($link, $colaborador_id, $inicio, $fin)
+{
+    try {
+        require_once '../TCPDF-main/tcpdf.php';
+        $dias = (new DateTime($inicio))->diff(new DateTime($fin))->days + 1;
 
-    if ($traslape) {
-        echo "Error: Ya tienes vacaciones registradas en ese período.";
-        exit;
-    }
-
-    if ($dias >= 7 && $dias <= $disponibles) {
-        $vac->registrar($colaborador_id, $inicio, $fin);
         // 🔽 Obtener datos del colaborador
         $stmt = $link->prepare("SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, identificacion FROM colaboradores WHERE id_colaborador = ?");
         $stmt->bind_param("i", $colaborador_id);
@@ -77,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 📌 Código QR centrado (con datos de control)
         $qr = 'Colaborador: ' . $colaborador['primer_nombre'] . ' ' . $colaborador['primer_apellido'] . ' | Fecha: ' . date('Y-m-d H:i:s');
-        $style = ['border' => 0, 'vpadding' => 'auto', 'hpadding' => 'auto', 'fgcolor' => [0,0,0], 'bgcolor' => false];
+        $style = ['border' => 0, 'vpadding' => 'auto', 'hpadding' => 'auto', 'fgcolor' => [0, 0, 0], 'bgcolor' => false];
         $pdf->write2DBarcode($qr, 'QRCODE,H', 85, $pdf->GetY(), 40, 40, $style, 'N');
         $pdf->Ln(30);
 
@@ -86,11 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdf->Cell(0, 10, 'Documento generado automáticamente - Capital Humano', 0, 0, 'C');
 
         // 💾 Guardar PDF
-        $filename = $pdfs_dir . 'solicitud_vacaciones_' . $colaborador_id . '_' . date('Ymd_His') . '.pdf';
+        $filename = $pdfs_dir . 'pdfs' . $colaborador_id . '_' . date('Ymd_His') . '.pdf';
         $pdf->Output($filename, 'D');
 
-} else {
-        echo "Error: Solicitud inválida.";
+    }catch (Exception $e){
+        error_log($e->getMessage());
     }
+
 }
 

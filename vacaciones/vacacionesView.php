@@ -170,7 +170,7 @@ if (isset($_GET['msg'])) {
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                         </div>
                                         <div class="modal-body bg-light">
-                                            <form id="formVacaciones<?= $colaborador_id ?>" method="POST" action="registrarVacaciones.php" class="needs-validation">
+                                            <form id="formVacaciones<?= $colaborador_id ?>" method="POST" action="generarPDF.php" class="needs-validation">
                                                 <input type="hidden" name="colaborador_id" value="<?= $colaborador_id ?>">
 
                                                 <div class="mb-3">
@@ -284,12 +284,34 @@ if (isset($_GET['msg'])) {
                                     })
                                         .then(res => res.json())
                                         .then(data => {
+                                            console.error(data);
                                             if (data.status) {
                                                 Swal.fire({
                                                     icon: 'success',
                                                     title: 'Registro exitoso',
                                                     text: 'Vacaciones registradas correctamente.'
-                                                });
+                                                }).then(function () {
+                                                    fetch("descargarPDF.php?colaborador_id=<?= $colaborador_id ?>&fecha_inicio=" + fechaInicio + "&fecha_fin=" + fechaFin, {
+                                                        method: "GET",
+                                                    }).then(response => response.blob())
+                                                        .then(blob => {
+                                                            const url = window.URL.createObjectURL(blob);
+                                                            const a = document.createElement("a");
+                                                            a.href = url;
+                                                            a.download = "vacaciones.pdf"; // nombre del archivo
+                                                            document.body.appendChild(a);
+                                                            a.click();
+                                                            a.remove();
+                                                            window.URL.revokeObjectURL(url);
+                                                        })
+                                                        .catch(err => {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Error',
+                                                                text: 'No se pudo descargar el PDF.'
+                                                            });
+                                                        });
+                                                })
 
                                                 form<?= $colaborador_id ?>.reset();
                                                 fin<?= $colaborador_id ?>.value = '';
@@ -313,6 +335,7 @@ if (isset($_GET['msg'])) {
                                             }
                                         })
                                         .catch(err => {
+                                            console.error(err);
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: 'Error de conexión',
