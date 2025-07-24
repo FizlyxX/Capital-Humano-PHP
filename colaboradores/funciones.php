@@ -23,10 +23,6 @@ define('ORIGINAL_PHOTO_HEIGHT', 500); // Alto deseado para la foto "original" (t
 
 /**
  * Obtiene una lista de colaboradores de la base de datos.
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param bool $mostrar_inactivos Si es true, incluye colaboradores inactivos. Por defecto, solo activos.
- * @return array Un array de arrays asociativos con los datos de los colaboradores.
  */
 function getColaboradores($link, $mostrar_inactivos = false) {
     $colaboradores = [];
@@ -47,10 +43,6 @@ function getColaboradores($link, $mostrar_inactivos = false) {
 
 /**
  * Obtiene los detalles de un colaborador por su ID.
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param int $id El ID del colaborador.
- * @return array|null Un array asociativo con los datos del colaborador, o null si no se encuentra.
  */
 function getColaboradorById($link, $id) {
     $colaborador = null;
@@ -70,10 +62,6 @@ function getColaboradorById($link, $id) {
 
 /**
  * Sube y redimensiona una imagen de perfil, eliminando versiones antiguas si aplica.
- *
- * @param string $file_input_name El nombre del campo <input type="file"> en el formulario.
- * @param string|null $existing_photo_url_from_db La URL de la foto existente en la BD (si es una edición).
- * @return array Un array con 'success' (ruta URL) o 'error' (mensaje).
  */
 function subirYRedimensionarFotoPerfil($file_input_name, $existing_photo_url_from_db = null) {
     // Si no se sube un nuevo archivo, mantener el existente
@@ -162,13 +150,6 @@ function subirYRedimensionarFotoPerfil($file_input_name, $existing_photo_url_fro
 
 /**
  * Función auxiliar para redimensionar imágenes.
- *
- * @param resource $source_gd_image El recurso de imagen GD de origen.
- * @param string $target_path La ruta absoluta donde guardar la imagen redimensionada.
- * @param int $target_width El ancho deseado.
- * @param int $target_height El alto deseado.
- * @param string $extension La extensión del archivo ('jpg', 'png', 'gif').
- * @param int $type El tipo de imagen (IMAGETYPE_JPEG, etc.).
  */
 function redimensionarImagen($source_gd_image, $target_path, $target_width, $target_height, $extension, $type) {
     $width = imagesx($source_gd_image);
@@ -211,10 +192,6 @@ function redimensionarImagen($source_gd_image, $target_path, $target_width, $tar
 
 /**
  * Sube un archivo PDF al servidor, eliminando la versión antigua si aplica.
- *
- * @param string $file_input_name El nombre del campo <input type="file"> en el formulario.
- * @param string|null $existing_pdf_url La URL del PDF existente en la BD (si es una edición).
- * @return array Un array con 'success' (ruta URL) o 'error' (mensaje).
  */
 function subirPDF($file_input_name, $existing_pdf_url = null) {
     // Si no se sube un nuevo archivo, mantener el existente
@@ -249,12 +226,6 @@ function subirPDF($file_input_name, $existing_pdf_url = null) {
 
 /**
  * Crea un nuevo colaborador en la base de datos y gestiona la subida de archivos.
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param array $data Array asociativo con los datos del colaborador.
- * @param string $foto_file_input_name El nombre del campo de archivo de la foto.
- * @param string $pdf_file_input_name El nombre del campo de archivo del PDF.
- * @return array Un array con 'success' (true) o 'error' (mensaje).
  */
 function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_name) {
     // Manejo de la subida de foto
@@ -324,13 +295,6 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
 
 /**
  * Actualiza un colaborador existente en la base de datos y gestiona la subida de archivos.
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param int $id_colaborador El ID del colaborador a actualizar.
- * @param array $data Array asociativo con los datos del colaborador.
- * @param string $foto_file_input_name El nombre del campo de archivo de la foto.
- * @param string $pdf_file_input_name El nombre del campo de archivo del PDF.
- * @return array Un array con 'success' (true) o 'error' (mensaje).
  */
 function actualizarColaborador($link, $id_colaborador, $data, $foto_file_input_name, $pdf_file_input_name) {
     // Obtener las rutas actuales de foto y PDF del colaborador desde la BD para pasarlas a las funciones de subida
@@ -389,10 +353,6 @@ function actualizarColaborador($link, $id_colaborador, $data, $foto_file_input_n
 
 /**
  * Desactiva un colaborador en la base de datos (cambia su estado 'activo' a 0).
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param int $id_colaborador El ID del colaborador a desactivar.
- * @return bool True si la operación fue exitosa, false en caso contrario.
  */
 function desactivarColaborador($link, $id_colaborador) {
     $sql = "UPDATE colaboradores SET activo = 0 WHERE id_colaborador = ?";
@@ -409,10 +369,6 @@ function desactivarColaborador($link, $id_colaborador) {
 
 /**
  * Activa un colaborador en la base de datos (cambia su estado 'activo' a 1).
- *
- * @param mysqli $link La conexión a la base de datos.
- * @param int $id_colaborador El ID del colaborador a activar.
- * @return bool True si la operación fue exitosa, false en caso contrario.
  */
 function activarColaborador($link, $id_colaborador) {
     $sql = "UPDATE colaboradores SET activo = 1 WHERE id_colaborador = ?";
@@ -429,13 +385,6 @@ function activarColaborador($link, $id_colaborador) {
 
 /**
  * Elimina físicamente los archivos de foto y PDF de un colaborador del servidor.
- * NOTA: Esta función DEBE usarse con EXTREMA PRECAUCIÓN y solo si el registro del colaborador
- * va a ser completamente eliminado de la BD, lo cual no es la práctica recomendada para
- * la desactivación.
- *
- * @param array $colaborador_data Array asociativo con los datos del colaborador,
- * especialmente 'ruta_foto_perfil' y 'ruta_historial_academico_pdf'.
- * @return bool True si los archivos fueron procesados (borrados o no existían), false en caso de error.
  */
 function eliminarArchivosColaborador($colaborador_data) {
     if (is_array($colaborador_data)) {

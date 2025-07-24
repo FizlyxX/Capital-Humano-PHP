@@ -1,5 +1,5 @@
 /*
- * Archivo: style.css (CSS general para la aplicación)
+ * Archivo: style.css (Tu CSS general para la aplicación, excluyendo el login si tiene estilos incrustados)
  */
 
 /* ===================================================================== */
@@ -13,7 +13,8 @@ body {
     display: flex;             
     flex-direction: column;    
     min-height: 100vh;         
-    overflow-x: hidden; /* Controla el desbordamiento horizontal */
+    overflow-x: hidden;        
+    /* REMOVIDO: overflow: hidden; que estaba causando el problema del footer y el scroll vertical */
     background-color: #f8f9fa; 
 }
 
@@ -21,14 +22,14 @@ body {
  * Contenedores principales de contenido (.content para home, .content-wrapper para módulos):
  */
 .content, .content-wrapper { 
-    flex: 1;                  
-    overflow-y: auto;         
-    padding: 20px 15px;       
-    min-height: calc(100vh - 56px - 60px); 
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 15px;  
 }
 
 /*
  * Estilos del FOOTER:
+ * Aplica un estilo consistente a todos los footers en la aplicación.
  */
 .footer { 
     background-color: #f8f9fa;
@@ -38,19 +39,14 @@ body {
     color: #6c757d;
     font-size: 0.9rem;
     width: 100%;
-    /* No se necesita position: fixed/absolute aquí gracias a flexbox en body */
 }
-
-/* ===================================================================== */
-/* ESTILOS ESPECÍFICOS DE LOS MÓDULOS DE CRUD (COLABORADORES, USUARIOS, ROLES) */
-/* ===================================================================== */
 
 /* Estilos para miniaturas de fotos en tablas (Módulo Colaboradores - index.php) */
 .photo-thumbnail {
-    width: 50px; 
+    width: 50px;
     height: 50px;
     object-fit: cover;
-    border-radius: 50%; 
+    border-radius: 50%;
     border: 1px solid #ddd;
 }
 
@@ -88,7 +84,7 @@ body {
 
 /* Estilos para la página de detalles del colaborador (colaboradores/ver.php) */
 .detail-photo {
-    max-width: 100%; 
+    max-width: 100%; /* Permite que la imagen ocupe todo el ancho de la columna (col-md-4) */
     height: auto;
     object-fit: cover;
     border-radius: 5px;
@@ -107,8 +103,32 @@ body {
     color: #555;
 }
 
+/* Estilos de Select2 para que se vea bien con Bootstrap 5 (si se usa en algún módulo) */
+.select2-container .select2-selection--single {
+    height: 48px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding-top: 8px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 46px;
+    right: 5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 30px;
+    padding-left: 15px;
+}
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #80bdff; /* Color de enfoque de Bootstrap */
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Sombra de enfoque */
+}
+.select2-container.is-invalid + .invalid-feedback {
+    display: block; 
+}
+
+
 /* ===================================================================== */
-/* MEDIA QUERIES (PARA RESPONSIVIDAD GENERAL) */
+/* MEDIA QUERIES (PARA RESPONSIVIDAD GENERAL DE LA APP) */
 /* ===================================================================== */
 
 @media (max-width: 768px) {

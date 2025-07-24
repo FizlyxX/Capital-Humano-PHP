@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 24, 2025 at 08:50 PM
+-- Generation Time: Jul 24, 2025 at 10:38 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cargos` (
   KEY `id_colaborador` (`id_colaborador`),
   KEY `id_departamento` (`id_departamento`),
   KEY `id_ocupacion` (`id_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `cargos`
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS `cargos` (
 INSERT INTO `cargos` (`id_cargo`, `id_colaborador`, `id_departamento`, `id_ocupacion`, `sueldo`, `fecha_contratacion`, `tipo_colaborador`, `activo_en_cargo`, `firma_datos`, `fecha_firma`) VALUES
 (1, 1, 3, 1, 2100.00, '2020-01-10', 'Permanente', 0, 'LXT3bHjY9dWE5urxK1GGnE5vRttmMi1OvVcm9X10TLT8K3aX9Sb9Fo+NK4Sr22tq5YtIJRO64N4ZxMjphvNSLz1GToZQlvWMvYUEotdqYy2sjmlN2OoK23IHuL/Pua1+eJST0it2q6vA7T95tGWKjqE30yXZDFCsqIwDwvZao3PQgacAtnnXQDrlAkIu4HB0uglnW5Wddx1+p4mg66+rU6wWJNkUO2AHaiBLjTo8BzdKCW+vfOhy0S5gNeZDQeJQsf71etLdtgU9SYcEyZkniMwu+rIvay7k8o5GvsGn68VN6FvQqfd5ChkwF8JIkxMxJ1/2Lf5cg9bKjn8D64XXIQ==', '2025-07-24 09:27:58'),
 (2, 2, 1, 4, 1750.00, '2021-03-15', 'Permanente', 0, 'oQbt1BtZCzqsA+EWbfa/toP+3XBtGjXt9soiTe6TL7M8Ijl644EMgy0zbgWG97PzobCA1iHkukiOxe0VTXQrLLNDDwMD0ykzwYj1WJNe5Aayvx8e0ZKZjgfBMOe1zur1u+5wdZxMgYtXlxlQwgoUNfj/VRk0p6JOgh6iic+dIoeblpFKf+LYL/KJsA88a20yhtasocGNiQfXzWcvdYURlIecOyk2acyuiOPSRtP4V6ftg5k0PnDrrlJCB53NSMedce+yAVefazEknTRjBujsLGQ8xm2pSzG/+V34IY14j2wLgpMofy4z8c7oBqEiZf6NCDuY2r6ERcprTnVucmDCwQ==', '2025-07-24 09:36:05'),
-(3, 4, 2, 3, 1650.00, '2023-12-04', 'Permanente', 1, 'oSj7cM/DZqdU14Xg5xJDowT9vHrbaEtiYcts+IJZ7jj28xWTHgnI9kSlF3LxJiNkwby4DmjRIHPXkgWnT1UZofCLSR518z2deLdMagz28vSFH/vsHs7pP8ilkiMNTVEK2tCVqf8spxBD96qHiVkzr7uVOsZlu4FNJC9s9zwADwYUmq/DH1kyKXuipRvNgXZez8U7+BIV6bDAp8bV/h0PaQ5OcY0xiFgWd/n08LOs/fhLEjo/3aiDmZBh97xWzEEoslsKgKv1SgVjdAnNTkwgvBs3B44glCgpW9VTTXJP9xZf+eALU4wqa/QreyOYoRN6Ctm9eQyekHdrBhs4dxmpiA==', '2025-07-24 09:40:05'),
-(4, 5, 4, 2, 1400.00, '2022-01-10', 'Eventual', 1, 'VyZgj/E1W/p0slVWQUJvFPIIttKOVKWe33pAfVLRG/JNyYBXn+Px5FbwMLT2rZLjsVgN0lVxaAvydVlRV7VgRwou1Csp5v7GwCsE84P6VUpvBR849wGwXKdCSCieMvLEN1BenMWZch8pEM2YpyVGsI8Z5v1G4t//2kOu5W7BfwZq6sXLdcTqz07H/Ogirnlp41SbU93rOiBZ4QdYB5KMSSjwtDcDBaflrXcH6TAwZFQhlAKzlYJtYrJe8+HPY9GGrLlj//bE0i2BC6QabMGcY1QgDOwCyqIHJzJm/Tt70D88H08DjHshjpLbehfesjKEtFAjqeubQZvee5I5LIIL3A==', '2025-07-24 09:41:28'),
+(3, 4, 2, 3, 700.00, '2025-02-02', 'Interino', 1, 'dnbyBWdwoO/HidpOH25KMFSf2boqimD4HuIryIuajNevGiSDuI3cNTjsvQjZfP9qL0lxcJ2AhmjxTVuV3O952FmuHBfylGbGj2AN1+NMXZNri9tTi63hFaSCH8BaWPqtnhN6Q7i/PoLv6+SjGpJMj7E9CpJj2JNsmxVLa4iymj0GETPhjjmLzIjuQH8MRphIM8cK9NfOSmrv+P0jkhLd+J2qaH3jP4Dvy9aGc6R4pOX+zU/VR2oWzpBRqlqWF1vVIVJhX+Y0nxFj6MVDOjYhA6GKKjQz1xzplMsYmLXiKQQYiPQKXQGi1rF1O9xYaul6j6oY31x7VaO9+mWTXVsrhA==', '2025-07-24 22:32:46'),
+(4, 5, 4, 2, 900.00, '2022-01-10', 'Eventual', 1, 'iwajXOy7EJqClio4AMk0CkC5IBlyS29WC2Xg2rDn3KQ3U7zPTynCnYl+6O4mRwwnHkfcAFc5cHNmOV6ALdzV8UjwCozjfFPzyJOguuV+ZNQJ4wBtOhpsdlz/Wh0yZrPWePqXfFN3nyujh3UrBCHpiqkYFL+zDLjSqIlLucnBk2pdMBALW6B48k0Szl8Goin4c83CcxV9OgvYuqW/FPkgMO/vaNDUeauqSaKbNgJtzLV1o4o5VtQJdL3Aj0wJP5LItAlSEa/B4MUPWiOz403JcYsQtSfgHoktqpafIQ1FkD8ywnxVHEnqqABPoRaS0tk2g1P/n+oUwY7YwwvI3UDHCA==', '2025-07-24 22:32:53'),
 (5, 9, 1, 4, 1800.00, '2018-12-05', 'Permanente', 1, 'SW1SC0xMW/P3QwWDiNTyBaLGX9lzYyVkL2KFb8mThaKTGTnSFCuTo7jm5dTyvZFmqpR6zpTbIzdmLk4Cnc60IIlHfaexF4DSm09cq69EriOnXCI+zgpViYZWzkeJXcqUJ/kD16GI7J/T2sr370ToUfw5ldBzi7XXVVlG37XtZyUdU9lcdeFh4KiZMUCEz68qOIP1fR/u1edGYHIrta8w74dp6+FFqubSC+jAsKR0HrE2YiwsZD/YaoHLEnb/CVnqhkRvRv34Q42WvH2wFZ4AV+11UVgpGl3wbwTqZ0GnlcfdiXdBaKzdapLx8gcPWU6HONHyW2cMivvfbtX7LmK0sg==', '2025-07-24 09:42:50'),
 (6, 1, 3, 5, 2800.00, '2022-04-14', 'Permanente', 1, 'qWZfBpNJGorLtpDxDynp8IZkPqsm0VkFoAvMr3f8mG05yGCQ2O2mCUtXhhaL+or5J0n7W7cC4xNCZAzfpLsFS6KETae4y2y1Ki+rE6rBc4SYR1FKOJlBlP4qriKcIcdCorg7e5vkZxUsMTBNFeeQn4ZkJqdnOFDubYbbF2NjwhdoL36z/Um3LoPZWzl7yr9jctKgv+HRchXrnzYPyB3kmyFV1AwK6z+LKWYckQ9qpiOqJ9mQvZe84oOqsTqQc8PvXYw1CHx9IDOaHEbWvxNqb5RDIwzU0/OL3hpzFcyIsJewcl0k8Mni0AzjXmIpSgCu7VBuqMxadSMDogmxVRABFQ==', '2025-07-24 09:50:11'),
 (7, 2, 1, 11, 2240.00, '2022-05-26', 'Permanente', 0, 'WIToHOMbVJjfykVMwuJyfXxFRfwYpN/jiS3HtaTpijjWQFTnEr+0tE2/9/4lSIWIN7e2BLsLMU7RDTNBDrN1j4KzLmzFUul5a5i28+qPAJ9DsnzhMFnFOaOTU5vX9mRV5jMHQgR4Z6NZED1YnNojieSgwQxrPCETRwp5SerSmxBpKEAigxGRwQBrNupLiyLDxwM2ohrRGRBcArtg9NT0Adx7sKrcW6EWHjg6EaB5hmrDhkQ7PxUXc9xtZhdHoUSuLiZpmtsOHnxJyWByAdJlte9lBthxuK+tMoYfrEWgsHlMN7BFFEzmHrssbTlearKC27Kd96rbFUzZ5nVokuBRUQ==', '2025-07-24 09:59:38'),
@@ -65,8 +65,9 @@ INSERT INTO `cargos` (`id_cargo`, `id_colaborador`, `id_departamento`, `id_ocupa
 (13, 12, 4, 9, 2500.00, '2020-03-17', 'Permanente', 1, 'FtjW8Pvfsd023zE2D+FlvPzoLT9vEh1Ya00rjmeT9fO5msosEpurmw6Ls6Fq0HQCJouVpYgxGpGzUXLLmDs20vHrOXEeUmrTER/RkTiiwtnrxZgnTip8jjDwXPlIPbRCP8UARJUA7vPm1s0mwHcpItH+el+wUhABAohPtms97GY9p0R++nbEHnazzGqma6Hzeyv84VFeaApRg5tPUN3sEJZYp/q9ntuPZnR6r7rNTIri1+i3fhKFSV8L0woX+5jGwVfZM1ziTSqAeuaGUCP1dtQXVk1EUF5wewjFdE7de+rJEZZ+Jkr9SxQxst+zb9A+Tm+jnAkj3+0GgqLTBvQ32w==', '2025-07-24 20:27:40'),
 (14, 3, 2, 8, 2600.00, '2019-06-01', 'Permanente', 1, 'a0v/KktydDscDbtvGmCImwHtKKM13vGh1XRGeMn0BuP+lLqdlTchqj/iURopx+TsSCHkwpgYXsY1riv/druj+e6RhNVUJIV1A9wqjrOA0qVl/bGMpAe+4OF+7YvOXpvLLNN6KjUK0UaKjn+3lyAyDqGCE4C6L9do2BxAynnYneEf8r8e+XBhLKy1R62ZschBdXHkfutxMrYPhrcv6q1/0mDkJ/CN5NRIuN6ozHbbcq6hiBLW2otd3VMuqgGA+KBp/yO3XpAWSX7IMNqxx3RugYklF5l2PnSvc352aflSWErJg2ATfH3b4AOcrBHgncqxtPNYfPYqgzdn/cNDvraK5Q==', '2025-07-24 20:45:21'),
 (15, 8, 1, 4, 1300.00, '2023-08-01', 'Permanente', 0, 'UYDJqlMLYQosOerQsMVirpMJjQzaXjT64oCK4Ban5esFFVkwIysWRGv889Vqt9D6Zlr33jdN1TgIdbIn1NCXqoep5BkRWiQLzSueh0sDKRRb6CNncVhZ7Cbkqh91IqrG8xA6nlvJthd/MHbjZVaNOGPi9MKcMeR4NJfYnA4igq2iM1bdxeumxLajRb2qko6xJkmvD6w4HjG6EoV1at5KSxvL5v8X2G2b7qS3UFF4AQAzCiSy8jIEg8t+t3kv6kWYL8aCRaQ1xc9zuKmHteHNRdLFYTzdCcp+NxpTewnNyL0OVwQUCk8O+lIFhKulzfXdj0w5QFPFkUxcZP23YZheFQ==', '2025-07-24 20:47:14'),
-(16, 8, 1, 12, 2000.00, '2024-04-28', 'Permanente', 1, 'N9hNSavaUCDAUQ7fkb7Kxrmit8bx6jgoJamdFp6gMNxALrhqORqvnWAdLe3Jch6GFYlaghPluqG29RkNBNv+JfVaVi9f4eiZ62v6npfU4n4KqI1bcYxqctAnPLniI90Kk0y6OWKwHy7OClDDZi0846eoV72o814FYTLNThmnYo6OChf1jd0g57iHvEleuqiVBFSY+ipFSu3oJq2mZsbuf5kVp8ySPIuHpI3yGe4a3qT0iLZLkxwbCijUoxI9tzn+r6kBrOQm+AfiepQY/nrUAeh3Tm/tEsAHuinTj9FXBA6yGMadg0CODZjckgvdCFJCPBALOkyIpADJzOKC7ZjhxQ==', '2025-07-24 20:47:53'),
-(17, 11, 4, 5, 1800.00, '2022-10-10', 'Permanente', 1, 'DVBHGDlX3U3pKtfdU0He2txr1//psVJ0rmEq0L4Wn33KwaeYbbHPkTz5unH+1oeF81kuBxQAlNOusXPfC3vsWZx25FXU9WF+s1f7Px5aHZu7Jgt6pXjq+Uhaerl0V0HUke69bTd3dZ+iS2A4qGztAfajKP/wcVdpd8QSlORUpoMjXkMdjyWXwKojy7cCzlsfNeLD/VGDBhoLg3zr+1KWDKcAAlX198EuP3XtJaMEKDgdCbAOKnwi2gzb0WHdGS6BODhF2N4sRmF8OwCfIWyndyHyWowSatd/uYSIx9lVFFVA19ijM5iH4WcvxrSxWt2NhnXKS+slUTQLngcbi6NPtQ==', '2025-07-24 20:49:44');
+(16, 8, 1, 12, 2000.00, '2025-07-01', 'Permanente', 1, 'E7lV6bMPlPWEfggQCQps3tAiln/PD4c46Wn3f2aZy1Y8fUCeEJUQCFAP1/fDoGxr6If1RMvI1ksC0V4QveTMqQgs6WHnKRuopZ72OPnjuAZvwudtMPqnGM63H7b0HUrKYgMCl6Xj5J+vphknOygnkWuxHPt1haF7k/Avdh0iOW2dMpo5FeeSMDUi9UtNmHNhvAP6dcTrUa7HYpbVoC+fhKWa3eTKLWtgdUrELANkzifkyjQi3skLV1yP9iLYhEN9q4fekTbRR98lFlSoCz6uO067FM1lxftK+Hda2PvfGEHhs2enkQUN3ICr4KSMdTfPg3QEFQ0ddbMxNtFbkW8YRQ==', '2025-07-24 22:26:09'),
+(17, 11, 4, 5, 1800.00, '2022-10-10', 'Permanente', 0, 'DVBHGDlX3U3pKtfdU0He2txr1//psVJ0rmEq0L4Wn33KwaeYbbHPkTz5unH+1oeF81kuBxQAlNOusXPfC3vsWZx25FXU9WF+s1f7Px5aHZu7Jgt6pXjq+Uhaerl0V0HUke69bTd3dZ+iS2A4qGztAfajKP/wcVdpd8QSlORUpoMjXkMdjyWXwKojy7cCzlsfNeLD/VGDBhoLg3zr+1KWDKcAAlX198EuP3XtJaMEKDgdCbAOKnwi2gzb0WHdGS6BODhF2N4sRmF8OwCfIWyndyHyWowSatd/uYSIx9lVFFVA19ijM5iH4WcvxrSxWt2NhnXKS+slUTQLngcbi6NPtQ==', '2025-07-24 20:49:44'),
+(18, 11, 4, 9, 2480.00, '2024-09-12', 'Permanente', 1, 'QOUVV6nZebVqdvYUpjHmB6Mc2VTdtFYQlyU+MItu62Z0tcBrZ9yjZ0Ht6v++Pps1+Dh/yOuZogeLEeQKEIe5sa2r3bg3cDUejFMfiVzyksU6lc2NEOA+RGJ7aD6X9CE3yxxNpMq4yM/TQfPM9p24D5I3vN82P8B37bEhBGJCzxfgXOnMavvDQ9cahQgI0NL2sBQFbHp+DF+xXhfFmiBHxysX3BMZD7oVZIeEzMThHmLH3Xc3j6SvxLnXAPnNeT6eIaXC+FQQZNBwxMNymG5orxnS14uNTrKSh3i+94Hv7IVohStFGvc/7vfyh5CsP4veA7V2i6M7HHH/xuZvCihkOQ==', '2025-07-24 22:32:14');
 
 -- --------------------------------------------------------
 
@@ -98,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `colaboradores` (
   PRIMARY KEY (`id_colaborador`),
   UNIQUE KEY `identificacion` (`identificacion`),
   KEY `colaborador_fk` (`estatus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `colaboradores`
@@ -108,7 +109,7 @@ INSERT INTO `colaboradores` (`id_colaborador`, `primer_nombre`, `segundo_nombre`
 (1, 'Juan', 'Carlos', 'Pérez', 'García', 'M', '8-765-4389', '1990-05-15', 'juan.perez@example.com', '222-3334', '6555-4444', 'Calle Principal, Edificio Central, Apt. 5, Ciudad de Panamá', '../uploads/fotos_perfil/original_foto_687fbd14495b6.jpeg', NULL, '2025-07-22 15:52:18', 1, 4, '2020-01-10', NULL),
 (2, 'Ana', 'María', 'González', 'Rojas', 'F', '9-876-5432', '1992-11-28', 'ana.gonzalez@example.com', '333-4444', '6777-8888', 'Avenida Central, Edificio Sol, Apt. 10, Ciudad de Panamá', '../uploads/fotos_perfil/original_foto_687fc5fa25155.jpeg', NULL, '2025-07-22 17:10:18', 1, 4, '2021-03-15', NULL),
 (3, 'Luis', 'Fernando', 'Castro', 'Castro', 'M', '9-876-543', '1985-07-20', 'luis.castro@gmail.com', '333-2542', '6777-2222', 'Avenida Central, Casa #10, David, Chiriquí', '../uploads/fotos_perfil/original_foto_688132d401cfd.jpeg', NULL, '2025-07-23 19:07:00', 1, 4, '2019-06-01', NULL),
-(4, 'Sofía', 'Isabel', 'Vargas', 'Torres', 'F', 'E-5-98765', '1993-01-11', 'sofia.vargas@outlook.com', '444-3333', '6888-3333', 'Vía España, PH Océano, Piso 12, Apt. 12B, Ciudad de Panamá', '../uploads/fotos_perfil/original_foto_6881337772aa2.jpeg', NULL, '2025-07-23 19:09:43', 1, 4, '2023-04-12', NULL),
+(4, 'Sofía', 'Isabel', 'Vargas', 'Torres', 'F', 'E-5-98765', '1993-01-11', 'sofia.vargas@outlook.com', '444-3333', '6888-3333', 'Vía España, PH Océano, Piso 12, Apt. 12B, Ciudad de Panamá', '../uploads/fotos_perfil/original_foto_6881337772aa2.jpeg', NULL, '2025-07-23 19:09:43', 1, 4, '2025-02-20', NULL),
 (5, 'Ricardo', 'Javier', 'Núñez', 'Blanco', 'M', '7-654-3210', '1988-01-25', 'ricardo.nunez@example.com', '555-4444', '6999-4444', 'Calle 50, Plaza Corporativa, Oficina 701, Ciudad de Panamá', '../uploads/fotos_perfil/original_foto_688134a84b344.jpeg', NULL, '2025-07-23 19:14:48', 1, 4, '2022-01-10', NULL),
 (6, 'Pedro', 'José', 'Martínez', 'López', 'M', '4-567-890', '1995-02-28', 'pedro.martinez@gmail.com', '789-0123', '6123-4567', 'Calle La Amistad, Edificio Sol, Apt. 5B, Santiago, Veraguas', '../uploads/fotos_perfil/original_foto_68813651e14ca.jpg', NULL, '2025-07-23 19:21:53', 0, 4, '2020-05-01', NULL),
 (7, 'María', 'Cristina', 'Ramírez', 'Díaz', 'F', '1-234-567', '1989-09-10', 'maria.ramirez@example.com', '123-4567', '6987-6543', 'Avenida del Mar, PH Marina, Piso 8, Apt. 8A, Colón', '../uploads/fotos_perfil/original_foto_68813651e14ca.jpg', NULL, '2025-07-23 19:28:50', 1, 4, '2020-07-15', NULL),
@@ -130,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   `nombre_departamento` varchar(100) NOT NULL,
   PRIMARY KEY (`id_departamento`),
   UNIQUE KEY `nombre_departamento` (`nombre_departamento`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `departamentos`
@@ -154,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `estatus_colaborador` (
   `estatus` enum('Vacaciones','Licencia','Incapacitado','Trabajando') NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `estatus_colaborador`
@@ -178,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `ocupaciones` (
   `nombre_ocupacion` varchar(100) NOT NULL,
   PRIMARY KEY (`id_ocupacion`),
   UNIQUE KEY `nombre_ocupacion` (`nombre_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `ocupaciones`
@@ -211,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `descripcion` text,
   PRIMARY KEY (`id_rol`),
   UNIQUE KEY `nombre_rol` (`nombre_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `roles`
@@ -238,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`),
   KEY `usuarios_rol_fk` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `usuarios`
@@ -264,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `vacaciones` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `vacaciones_fk` (`colaborador_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `vacaciones`
