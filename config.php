@@ -5,7 +5,7 @@ define('DB_PASSWORD', 'Pyro1721');
 define('DB_NAME', 'capital_humano');
 
 if (!defined('JWT_SECRET_KEY')) {
-    define('JWT_SECRET_KEY', 'claveProyecto'); // Usa la misma clave en todos los archivos
+    define('JWT_SECRET_KEY', 'claveProyecto');
 }
 
 // Intentar conectar a la base de datos
