@@ -9,10 +9,15 @@ $condiciones = [];
 $params = [];
 
 if (!empty($_GET['nombre'])) {
-    $condiciones[] = "c.nombres LIKE '%" . $_GET['nombre'] . "%'";
+    $condiciones[] = "(c.primer_nombre LIKE ? OR c.segundo_nombre LIKE ?)";
+    $params[] = "%" . $_GET['nombre'] . "%";
+    $params[] = "%" . $_GET['nombre'] . "%";
 }
+
 if (!empty($_GET['apellido'])) {
-    $condiciones[] = "c.apellidos LIKE '%" . $_GET['apellido'] . "%'";
+    $condiciones[] = "(c.primer_apellido LIKE ? OR c.segundo_apellido LIKE ?)";
+    $params[] = "%" . $_GET['apellido'] . "%";
+    $params[] = "%" . $_GET['apellido'] . "%";
 }
 if (!empty($_GET['sexo'])) {
     $condiciones[] = "c.sexo = '" . $_GET['sexo'] . "'";
