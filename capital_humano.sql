@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cargos` (
   KEY `id_colaborador` (`id_colaborador`),
   KEY `id_departamento` (`id_departamento`),
   KEY `id_ocupacion` (`id_ocupacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cargos`
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `colaboradores` (
   PRIMARY KEY (`id_colaborador`),
   UNIQUE KEY `identificacion` (`identificacion`),
   KEY `colaborador_fk` (`estatus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `colaboradores`
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   `nombre_departamento` varchar(100) NOT NULL,
   PRIMARY KEY (`id_departamento`),
   UNIQUE KEY `nombre_departamento` (`nombre_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `departamentos`
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `estatus_colaborador` (
   `estatus` enum('Vacaciones','Licencia','Incapacitado','Trabajando') NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `estatus_colaborador`
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `ocupaciones` (
   `nombre_ocupacion` varchar(100) NOT NULL,
   PRIMARY KEY (`id_ocupacion`),
   UNIQUE KEY `nombre_ocupacion` (`nombre_ocupacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ocupaciones`
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `descripcion` text,
   PRIMARY KEY (`id_rol`),
   UNIQUE KEY `nombre_rol` (`nombre_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `roles`
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`),
   KEY `usuarios_rol_fk` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `usuarios`
