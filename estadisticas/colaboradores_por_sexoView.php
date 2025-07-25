@@ -3,44 +3,17 @@ session_start();
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../classes/Footer.php';
+require_once __DIR__ . '/../reportes/colaboradores_por_sexo.php';
 
 $current_page = 'colaboradores_sexo';
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !isset($_SESSION["token"])) {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: ../index.php?error=not_authenticated");
     exit;
 }
 
-// Consumir API protegida
-$token = $_SESSION['token'];
-$api_url = "http://localhost/Capital-Humano-PHP/api/contraloria/colaboradores_por_sexo.php";
+$data = colaboradorXSexo();
 
-$ch = curl_init($api_url);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: Bearer $token"
-]);
-
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if (curl_errno($ch)) {
-    echo "cURL error: " . curl_error($ch);
-}
-
-curl_close($ch);
-
-$data = null;
-if ($response !== false) {
-    $parsed = json_decode($response, true);
-    if (isset($parsed['masculino']) && isset($parsed['femenino'])) {
-        $data = $parsed;
-    } elseif (isset($parsed['data'])) {
-        // En caso de que la API devuelva {"data": { ... }}
-        $data = $parsed['data'];
-    }
-}
 ?>
 
 <!DOCTYPE html>

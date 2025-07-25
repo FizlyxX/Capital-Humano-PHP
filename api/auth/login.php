@@ -26,7 +26,7 @@ if (!$conn) {
 }
 
 // Consulta real a la tabla usuarios
-$sql = "SELECT id, nombre_usuario, contrasena, id_rol, activo FROM usuarios WHERE nombre_usuario = ?";
+$sql = "SELECT id, nombre_usuario, contrasena, activo FROM contraloria WHERE nombre_usuario = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../auth/validate_token.php';
 require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../reportes/colaboradores_por_sexo.php';;
 
 header('Content-Type: application/json');
 
@@ -34,24 +35,9 @@ if (!$userData) {
     exit;
 }
 
+$colaboradores = colaboradorXSexo();
+
+echo json_encode($colaboradores);
+
 // Consulta a la base de datos
-$query = "SELECT sexo, COUNT(*) as cantidad FROM colaboradores WHERE activo = 1 GROUP BY sexo";
-$result = mysqli_query($link, $query);
 
-$masculino = 0;
-$femenino = 0;
-
-while ($row = mysqli_fetch_assoc($result)) {
-    $sexo = strtolower($row['sexo']);
-    if ($sexo === 'masculino') {
-        $masculino = (int)$row['cantidad'];
-    } elseif ($sexo === 'femenino') {
-        $femenino = (int)$row['cantidad'];
-    }
-}
-
-// Enviar respuesta JSON
-echo json_encode([
-    "masculino" => $masculino,
-    "femenino" => $femenino
-]);

@@ -1,4 +1,5 @@
 <?php
+global $link;
 session_start();
 
 require_once 'config.php';
@@ -41,34 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;
                             $_SESSION["id_rol"] = $id_rol; // ESTA LÍNEA ES CLAVE
-
-                            $apiPayload = json_encode([
-                                'nombre_usuario' => $username, // Si usas email real, cámbialo aquí
-                                'password' => $password
-                            ]);
-
-                            $options = [
-                                'http' => [
-                                    'header'  => "Content-Type: application/json",
-                                    'method'  => 'POST',
-                                    'content' => $apiPayload,
-                                ]
-                            ];
-
-                            $context = stream_context_create($options);
-                            $apiResponse = file_get_contents('http://localhost/Capital-Humano-PHP/api/auth/login.php', false, $context);
-
-                            if ($apiResponse !== false) {
-                                $respuesta = json_decode($apiResponse, true);
-
-                                if (isset($respuesta['data']['token'])) {
-                                    $_SESSION['data']['token'] = $respuesta['data']['token'];
-                                } else {
-                                    die("Error: token no recibido de la API.");
-                                }
-                            } else {
-                                die("Error al conectarse a la API de login.");
-                            }
 
                             header("location: home.php");
                             exit();
