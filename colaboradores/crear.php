@@ -4,14 +4,13 @@ session_start();
 require_once '../config.php';
 require_once 'funciones.php';
 require_once '../classes/Footer.php';
+require_once '../classes/Sanitizar.php'; // Incluye la nueva clase
 
-// La variable $current_page debe ser definida antes de que navbar.php sea incluido
 $current_page = 'colaboradores';
 require_once '../includes/navbar.php';
 
-// Verificar si el usuario ha iniciado sesión y tiene permisos de Administrador o RRHH
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdministrador() && !esRRHH())) {
-    header("location: ../index.php"); // Redirigir al login si no tiene permisos
+    header("location: ../index.php");
     exit;
 }
 
@@ -20,62 +19,58 @@ $primer_nombre = $segundo_nombre = $primer_apellido = $segundo_apellido = "";
 $sexo = $identificacion = $fecha_nacimiento = $correo_personal = "";
 $telefono = $celular = $direccion = "";
 $fecha_ingreso = "";
-$estatus = ""; // Añadido: Inicializar la variable estatus
+$estatus = "";
 $primer_nombre_err = $primer_apellido_err = $sexo_err = $identificacion_err = $fecha_nacimiento_err = "";
 $correo_personal_err = $telefono_err = $celular_err = $direccion_err = "";
 $fecha_ingreso_err = "";
-$estatus_err = ""; // Añadido: Inicializar la variable de error para estatus
+$estatus_err = "";
 $foto_perfil_err = $historial_academico_pdf_err = "";
 
 // Procesar el formulario cuando se envía
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // 1. Recopilar y sanear datos del formulario (¡básico, para un proyecto real usar más sanitización!)
-    $primer_nombre = trim($_POST['primer_nombre']);
-    $segundo_nombre = trim($_POST['segundo_nombre']);
-    $primer_apellido = trim($_POST['primer_apellido']);
-    $segundo_apellido = trim($_POST['segundo_apellido']);
-    $sexo = trim($_POST['sexo']);
-    $identificacion = trim($_POST['identificacion']);
-    $fecha_nacimiento = trim($_POST['fecha_nacimiento']);
-    $correo_personal = trim($_POST['correo_personal']);
-    $telefono = trim($_POST['telefono']);
-    $celular = trim($_POST['celular']);
-    $direccion = trim($_POST['direccion']);
-    $fecha_ingreso = trim($_POST['fecha_ingreso']);
-    $estatus = trim($_POST['estatus']); // Añadido: Recoger el valor del estatus
+    // 1. Sanear datos del formulario usando la nueva clase
+    $primer_nombre = Sanitizar::sanearString($_POST['primer_nombre']);
+    $segundo_nombre = Sanitizar::sanearString($_POST['segundo_nombre']);
+    $primer_apellido = Sanitizar::sanearString($_POST['primer_apellido']);
+    $segundo_apellido = Sanitizar::sanearString($_POST['segundo_apellido']);
+    $sexo = Sanitizar::sanearString($_POST['sexo']);
+    $identificacion = Sanitizar::sanearString($_POST['identificacion']);
+    $fecha_nacimiento = Sanitizar::sanearString($_POST['fecha_nacimiento']);
+    $correo_personal = Sanitizar::sanearEmail($_POST['correo_personal']);
+    $telefono = Sanitizar::sanearString($_POST['telefono']);
+    $celular = Sanitizar::sanearString($_POST['celular']);
+    $direccion = Sanitizar::sanearString($_POST['direccion']);
+    $fecha_ingreso = Sanitizar::sanearString($_POST['fecha_ingreso']);
+    $estatus = Sanitizar::sanearString($_POST['estatus']);
 
-    // 2. Validar datos
-    if (empty($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
-    if (empty($primer_apellido)) { $primer_apellido_err = "Ingrese el primer apellido."; }
-    if (empty($sexo)) { $sexo_err = "Seleccione el sexo."; }
-    if (empty($identificacion)) { $identificacion_err = "Ingrese la identificación."; }
+    // 2. Validar datos usando la nueva clase
+    if (!Sanitizar::validarCampoNoVacio($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
+    if (!Sanitizar::validarCampoNoVacio($primer_apellido)) { $primer_apellido_err = "Ingrese el primer apellido."; }
+    if (!Sanitizar::validarCampoNoVacio($sexo)) { $sexo_err = "Seleccione el sexo."; }
+    if (!Sanitizar::validarCampoNoVacio($identificacion)) { $identificacion_err = "Ingrese la identificación."; }
+    if (!Sanitizar::validarCampoNoVacio($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
+    if (!Sanitizar::validarCampoNoVacio($fecha_ingreso)) { $fecha_ingreso_err = "Ingrese la fecha de ingreso."; }
+    if (!Sanitizar::validarCampoNoVacio($estatus)) { $estatus_err = "Seleccione el estatus."; }
+
     // Validar unicidad de identificación
-    $sql_check_id = "SELECT id_colaborador FROM colaboradores WHERE identificacion = ?";
-    if ($stmt_check_id = mysqli_prepare($link, $sql_check_id)) {
-        mysqli_stmt_bind_param($stmt_check_id, "s", $param_identificacion);
-        $param_identificacion = $identificacion;
-        if (mysqli_stmt_execute($stmt_check_id)) {
-            mysqli_stmt_store_result($stmt_check_id);
-            if (mysqli_stmt_num_rows($stmt_check_id) == 1) {
-                $identificacion_err = "Esta identificación (cédula) ya está registrada.";
+    if (empty($identificacion_err)) {
+        $sql_check_id = "SELECT id_colaborador FROM colaboradores WHERE identificacion = ?";
+        if ($stmt_check_id = mysqli_prepare($link, $sql_check_id)) {
+            mysqli_stmt_bind_param($stmt_check_id, "s", $param_identificacion);
+            $param_identificacion = $identificacion;
+            if (mysqli_stmt_execute($stmt_check_id)) {
+                mysqli_stmt_store_result($stmt_check_id);
+                if (mysqli_stmt_num_rows($stmt_check_id) == 1) {
+                    $identificacion_err = "Esta identificación (cédula) ya está registrada.";
+                }
             }
+            mysqli_stmt_close($stmt_check_id);
         }
-        mysqli_stmt_close($stmt_check_id);
     }
-
-    if (empty($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
-    if (empty($fecha_ingreso)) { $fecha_ingreso_err = "Ingrese la fecha de ingreso."; }
-    if (empty($estatus)) { $estatus_err = "Seleccione el estatus."; } // Añadido: Validar el estatus
-
-    // Puedes añadir más validaciones (regex para correo/teléfono, formato de fecha, etc.)
-
-    // 3. Procesar subida de Foto de Perfil y PDF
-    // Las funciones subirYRedimensionarFotoPerfil y subirPDF ya manejan los errores y devuelven la ruta o un error.
-    // Los errores se propagan si no hay éxito.
-
+    
     // Si no hay errores de validación de texto, proceder con archivos y BD
-    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err) && empty($estatus_err)) { // Añadido: estatus_err en la condición
+    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err) && empty($estatus_err)) {
         
         $colaborador_data = [
             'primer_nombre' => $primer_nombre,
@@ -90,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'celular' => $celular,
             'direccion' => $direccion,
             'fecha_ingreso' => $fecha_ingreso,
-            'estatus_id' => $estatus // Añadido: Pasar el estatus al array de datos
+            'estatus_id' => $estatus
         ];
 
         $resultado_creacion = crearColaborador($link, $colaborador_data, 'foto_perfil', 'historial_academico_pdf');
@@ -99,15 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("location: index.php?msg=creado");
             exit();
         } else {
-            // Manejar errores específicos devueltos por crearColaborador
             $error_message_from_func = isset($resultado_creacion['error']) ? $resultado_creacion['error'] : 'Error desconocido al crear.';
             
-            // Si el error es de identificación duplicada, actualiza el error_err específico
             if (strpos($error_message_from_func, 'identificación') !== false) {
                  $identificacion_err = $error_message_from_func;
-                 // No redirigir, mostrar el error en el formulario actual
             } else {
-                // Para otros errores de subida o DB, redirige con el mensaje para mostrarlo como alerta general
                 header("location: index.php?msg=error_upload&error_upload=" . urlencode($error_message_from_func));
                 exit();
             }
@@ -232,7 +223,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <textarea name="direccion" id="direccion" class="form-control" rows="3"><?php echo htmlspecialchars($direccion); ?></textarea>
             </div>
 
-            <div class="row"> <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4">
                     <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
                         <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
                         <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>

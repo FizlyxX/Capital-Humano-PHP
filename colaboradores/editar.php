@@ -5,13 +5,14 @@ session_start();
 require_once '../config.php';
 require_once 'funciones.php'; 
 require_once '../classes/Footer.php'; 
+require_once '../classes/Sanitizar.php'; // Incluir la clase Sanitizar
 
 $current_page = 'colaboradores';
 require_once '../includes/navbar.php'; 
 
-// Verificar si el usuario ha iniciado sesión y tiene permisos (ej. RRHH o Administrador)
+// Verificar si el usuario ha iniciado sesión y tiene permisos
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdministrador() && !esRRHH())) {
-    header("location: ../index.php"); // Redirigir al login si no tiene permisos
+    header("location: ../index.php");
     exit;
 }
 
@@ -24,51 +25,42 @@ $primer_nombre_err = $primer_apellido_err = $sexo_err = $identificacion_err = $f
 $correo_personal_err = $telefono_err = $celular_err = $direccion_err = "";
 $fecha_ingreso_err = ""; $estatus_err = "";
 $foto_perfil_err = $historial_academico_pdf_err = "";
-$current_foto_path = ''; // Para la URL de la miniatura a mostrar en el HTML
-$current_pdf_path = '';  // Para la URL del PDF a mostrar en el HTML
+$current_foto_path = '';
+$current_pdf_path = '';
 
 // Procesar el formulario cuando se envía (método POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_colaborador = $_POST['id_colaborador'];
 
-    // 1. Recopilar y sanear datos de texto
-    $primer_nombre = trim($_POST['primer_nombre']);
-    $segundo_nombre = trim($_POST['segundo_nombre']);
-    $primer_apellido = trim($_POST['primer_apellido']);
-    $segundo_apellido = trim($_POST['segundo_apellido']);
-    $sexo = trim($_POST['sexo']);
-    $identificacion = trim($_POST['identificacion']);
-    $fecha_nacimiento = trim($_POST['fecha_nacimiento']);
-    $correo_personal = trim($_POST['correo_personal']);
-    $telefono = trim($_POST['telefono']);
-    $celular = trim($_POST['celular']);
-    $direccion = trim($_POST['direccion']);
-    $fecha_ingreso = trim($_POST['fecha_ingreso']);
-    $estatus = trim($_POST['estatus']);
+    // 1. Sanear datos de texto usando la nueva clase
+    $primer_nombre = Sanitizar::sanearString($_POST['primer_nombre']);
+    $segundo_nombre = Sanitizar::sanearString($_POST['segundo_nombre']);
+    $primer_apellido = Sanitizar::sanearString($_POST['primer_apellido']);
+    $segundo_apellido = Sanitizar::sanearString($_POST['segundo_apellido']);
+    $sexo = Sanitizar::sanearString($_POST['sexo']);
+    $identificacion = Sanitizar::sanearString($_POST['identificacion']);
+    $fecha_nacimiento = Sanitizar::sanearString($_POST['fecha_nacimiento']);
+    $correo_personal = Sanitizar::sanearEmail($_POST['correo_personal']);
+    $telefono = Sanitizar::sanearString($_POST['telefono']);
+    $celular = Sanitizar::sanearString($_POST['celular']);
+    $direccion = Sanitizar::sanearString($_POST['direccion']);
+    $fecha_ingreso = Sanitizar::sanearString($_POST['fecha_ingreso']);
+    $estatus = Sanitizar::sanearString($_POST['estatus']);
 
-    // 2. Validar datos de texto
-    if (empty($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
-    if (empty($primer_apellido)) { $primer_apellido_err = "Ingrese el primer apellido."; }
-    if (empty($sexo)) { $sexo_err = "Seleccione el sexo."; }
-    if (empty($identificacion)) { $identificacion_err = "Ingrese la identificación."; }
-    // Validar unicidad de identificación, excluyendo al colaborador actual
-    $sql_check_id = "SELECT id_colaborador FROM colaboradores WHERE identificacion = ? AND id_colaborador != ?";
-    if ($stmt_check_id = mysqli_prepare($link, $sql_check_id)) {
-        mysqli_stmt_bind_param($stmt_check_id, "si", $param_identificacion, $param_id_colaborador);
-        $param_identificacion = $identificacion;
-        $param_id_colaborador = $id_colaborador;
-        if (mysqli_stmt_execute($stmt_check_id)) {
-            mysqli_stmt_store_result($stmt_check_id);
-            if (mysqli_stmt_num_rows($stmt_check_id) == 1) {
-                $identificacion_err = "Esta identificación (cédula) ya está registrada para otro colaborador.";
-            }
-        }
-        mysqli_stmt_close($stmt_check_id);
+    // 2. Validar datos de texto usando la nueva clase
+    if (!Sanitizar::validarCampoNoVacio($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
+    if (!Sanitizar::validarCampoNoVacio($primer_apellido)) { $primer_apellido_err = "Ingrese el primer apellido."; }
+    if (!Sanitizar::validarCampoNoVacio($sexo)) { $sexo_err = "Seleccione el sexo."; }
+    if (!Sanitizar::validarCampoNoVacio($identificacion)) { $identificacion_err = "Ingrese la identificación."; }
+    if (!Sanitizar::validarIdentificacionUnica($link, $identificacion, $id_colaborador)) {
+        $identificacion_err = "Esta identificación (cédula) ya está registrada para otro colaborador.";
     }
-    if (empty($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
+    if (!Sanitizar::validarCampoNoVacio($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
+    if (!Sanitizar::validarCampoNoVacio($fecha_ingreso)) { $fecha_ingreso_err = "Ingrese la fecha de ingreso."; }
+    if (!Sanitizar::validarCampoNoVacio($estatus)) { $estatus_err = "Seleccione el estatus."; }
 
     // Si no hay errores de validación de texto, proceder con archivos y BD
-    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err)) {
+    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err) && empty($estatus_err)) {
         
         $colaborador_data_for_update = [ 
             'primer_nombre' => $primer_nombre,
@@ -86,41 +78,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'estatus_id' => $estatus
         ];
 
-        // Llamar a la función para actualizar el colaborador, que también maneja las subidas de archivos
-        // La función actualizarColaborador() internamente obtiene las rutas antiguas de la BD.
         $resultado_actualizacion = actualizarColaborador($link, $id_colaborador, $colaborador_data_for_update, 'foto_perfil', 'historial_academico_pdf');
 
         if (isset($resultado_actualizacion['success'])) {
             header("location: index.php?msg=actualizado");
             exit();
         } else {
-            // Manejar errores específicos devueltos por actualizarColaborador
             $error_message_from_func = isset($resultado_actualizacion['error']) ? $resultado_actualizacion['error'] : 'Error desconocido al actualizar.';
             
             if (strpos($error_message_from_func, 'identificación') !== false) {
                  $identificacion_err = $error_message_from_func;
-                 // No redirigir, se mostrará el error en el formulario actual
             } else if (strpos($error_message_from_func, 'foto') !== false || strpos($error_message_from_func, 'PDF') !== false) {
-                $foto_perfil_err = $error_message_from_func; // Se mostrará este error
+                $foto_perfil_err = $error_message_from_func;
             } else {
-                // Para otros errores de DB que no son de archivos/identificación
                 echo '<div class="alert alert-danger">Error: ' . htmlspecialchars($error_message_from_func) . '</div>';
             }
-            // Si hay errores que se muestran en la página (no redirección), necesitas cerrar $link aquí
-            mysqli_close($link); 
+            mysqli_close($link);
         }
-    } else { // Si hay errores de validación de texto de formulario
-        // Si no se redirige, y hay errores de texto, la conexión debe cerrarse.
+    } else {
         mysqli_close($link);
     }
-
-} else { // Si no es POST, cargar datos del colaborador para el formulario (GET request)
+} else {
+    // Si no es POST, cargar datos del colaborador para el formulario (GET request)
     if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
         $id_colaborador = trim($_GET["id"]);
-        $colaborador_data = getColaboradorById($link, $id_colaborador); // Este es el $colaborador_data original del GET
+        $colaborador_data = getColaboradorById($link, $id_colaborador);
 
         if ($colaborador_data) {
-            // Asignación de variables, usando coalescencia nula para campos que pueden ser NULL en BD
             $primer_nombre = $colaborador_data['primer_nombre'] ?? '';
             $segundo_nombre = $colaborador_data['segundo_nombre'] ?? '';
             $primer_apellido = $colaborador_data['primer_apellido'] ?? '';
@@ -135,34 +119,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $fecha_ingreso = $colaborador_data['fecha_ingreso'] ?? '';
             $estatus = $colaborador_data['estatus_id'] ?? '';
             
-            // Rutas de archivos obtenidas directamente de la base de datos (con coalesce para NULL)
-            $current_foto_path_from_db = $colaborador_data['ruta_foto_perfil'] ?? ''; 
+            $current_foto_path_from_db = $colaborador_data['ruta_foto_perfil'] ?? '';
             $current_pdf_path_from_db = $colaborador_data['ruta_historial_academico_pdf'] ?? '';
 
-            // Construir la URL de la miniatura para mostrar en el HTML
             if (!empty($current_foto_path_from_db)) {
                  $base_foto_name = basename($current_foto_path_from_db);
-                 // La miniatura debe tener el formato 'thumb_original_foto_XXXX.jpeg'
                  $current_foto_path = URL_BASE_FOTOS . 'thumb_' . $base_foto_name;
             } else {
-                $current_foto_path = ''; // No hay foto, la ruta está vacía
+                $current_foto_path = '';
             }
-            // La ruta del PDF es directa, solo asegúrate de que esté vacía si es NULL
             $current_pdf_path = $current_pdf_path_from_db;
             
         } else {
-            // Colaborador no encontrado, redirigir
-            mysqli_close($link); // Cierra conexión antes de redirigir
+            mysqli_close($link);
             header("location: index.php?msg=error_notfound");
             exit();
         }
     } else {
-        // ID de colaborador no proporcionado en la URL, redirigir
-        mysqli_close($link); // Cierra conexión antes de redirigir
+        mysqli_close($link);
         header("location: index.php?msg=error");
         exit();
     }
-    mysqli_close($link); // Cierra la conexión si la página se carga por GET y todo fue bien.
+    mysqli_close($link);
 }
 ?>
 
@@ -173,7 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Colaborador - Capital Humano</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/app_style.css"> <style>
+    <link rel="stylesheet" href="../css/app_style.css">
+    <style>
         .current-file-preview {
             max-width: 150px;
             max-height: 150px;
@@ -187,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-top: 10px;
             display: inline-block;
         }
-         .footer { 
+         .footer {
             background-color: #f8f9fa;
             border-top: 1px solid #e9ecef;
             text-align: center;
@@ -315,8 +294,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <span class="invalid-feedback text-danger"><?php echo $estatus_err; ?></span>
                     </div>
                 </div>
-
-            </div>>
+            </div>
 
             <div class="row">
                 <div class="col-md-6">
@@ -346,7 +324,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="index.php" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
-    </div> <?php
+    </div>
+    <?php
     if (class_exists('Footer')) {
         $footer = new Footer();
         $footer->render();
