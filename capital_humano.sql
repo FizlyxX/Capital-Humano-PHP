@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cargos` (
   KEY `id_colaborador` (`id_colaborador`),
   KEY `id_departamento` (`id_departamento`),
   KEY `id_ocupacion` (`id_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `cargos`
@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `colaboradores` (
   `estatus_id` int NOT NULL DEFAULT '4',
   `fecha_ingreso` date NOT NULL,
   `fecha_salida` date DEFAULT NULL,
+  `id_usuario` INT NULL,
   PRIMARY KEY (`id_colaborador`),
   UNIQUE KEY `identificacion` (`identificacion`),
   KEY `colaborador_fk` (`estatus_id`)
@@ -131,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   `nombre_departamento` varchar(100) NOT NULL,
   PRIMARY KEY (`id_departamento`),
   UNIQUE KEY `nombre_departamento` (`nombre_departamento`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `departamentos`
@@ -179,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `ocupaciones` (
   `nombre_ocupacion` varchar(100) NOT NULL,
   PRIMARY KEY (`id_ocupacion`),
   UNIQUE KEY `nombre_ocupacion` (`nombre_ocupacion`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
 
 --
 -- Dumping data for table `ocupaciones`
@@ -265,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `vacaciones` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `vacaciones_fk` (`colaborador_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `vacaciones`
@@ -273,6 +274,18 @@ CREATE TABLE IF NOT EXISTS `vacaciones` (
 
 INSERT INTO `vacaciones` (`id`, `colaborador_id`, `fecha_inicio`, `fecha_fin`) VALUES
 (1, 7, '2025-07-30', '2025-08-09');
+
+--
+-- Table structure for table `contraloria`
+--
+
+DROP TABLE IF EXISTS `contraloria`;
+CREATE TABLE IF NOT EXISTS `contraloria`(
+    `id` INT auto_increment PRIMARY KEY,
+    `nombre_usuario` varchar(50) NULL,
+    `contrasena` varchar(255) NOT NULL,
+    `activo` INT NOT NULL
+)ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Constraints for dumped tables
@@ -284,11 +297,27 @@ INSERT INTO `vacaciones` (`id`, `colaborador_id`, `fecha_inicio`, `fecha_fin`) V
 ALTER TABLE `colaboradores`
   ADD CONSTRAINT `colaborador_fk` FOREIGN KEY (`estatus_id`) REFERENCES `estatus_colaborador` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `colaboradores`
+    ADD CONSTRAINT colaboradores_usuarios_id_fk FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON UPDATE CASCADE ON DELETE CASCADE; ;
+
 --
 -- Constraints for table `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `usuarios_rol_fk` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cargos`
+--
+ALTER TABLE `cargos`
+    ADD CONSTRAINT `colaboradores_cargo_fk` FOREIGN KEY (`id_colaborador`) REFERENCES `colaboradores` (`id_colaborador`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE `cargos`
+    ADD CONSTRAINT `cargos_departamento_fk` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE `cargos`
+    ADD CONSTRAINT `cargos_ocupacion_fk` FOREIGN KEY (`id_ocupacion`) REFERENCES `ocupaciones` (`id_ocupacion`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `vacaciones`
