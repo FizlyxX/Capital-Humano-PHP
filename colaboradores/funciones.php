@@ -60,6 +60,31 @@ function getColaboradorById($link, $id) {
     return $colaborador;
 }
 
+
+/**
+ * Obtiene el estatus del colaborador por su ID.
+ *
+ * @param mysqli $link La conexión a la base de datos.
+ * @param int $id El ID del colaborador.
+ * @return string|null El estatus como texto, o null si no se encuentra.
+ */
+function getEstatus($link, $id): ?string
+{
+    $estatus = null;
+    $sql = "SELECT e.estatus FROM colaboradores c INNER JOIN estatus_colaborador e ON c.estatus_id = e.id WHERE c.id_colaborador = ?;";
+    if ($stmt = mysqli_prepare($link, $sql)) {
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_bind_result($stmt, $estatusValor);
+            if (mysqli_stmt_fetch($stmt)) {
+                $estatus = $estatusValor;
+            }
+        }
+        mysqli_stmt_close($stmt);
+    }
+    return $estatus;
+}
+
 /**
  * Sube y redimensiona una imagen de perfil, eliminando versiones antiguas si aplica.
  */

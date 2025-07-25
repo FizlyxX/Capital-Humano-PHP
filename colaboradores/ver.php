@@ -2,7 +2,7 @@
 session_start();
 
 require_once '../config.php';
-require_once 'funciones.php'; 
+require_once 'funciones.php';
 require_once '../classes/Footer.php'; 
 
 $current_page = 'colaboradores';
@@ -18,7 +18,9 @@ $colaborador = null;
 
 if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
     $id_colaborador = trim($_GET["id"]);
+    $estatus = getEstatus($link, $id_colaborador);
     $colaborador = getColaboradorById($link, $id_colaborador);
+
 
     if (!$colaborador) {
         mysqli_close($link);
@@ -117,6 +119,7 @@ mysqli_close($link);
                         <p><span class="detail-label">Celular:</span> <?php echo htmlspecialchars($colaborador['celular'] ?? ''); ?></p>
                         <p><span class="detail-label">Dirección:</span> <?php echo nl2br(htmlspecialchars($colaborador['direccion'] ?? '')); ?></p>
                         <p><span class="detail-label">Fecha de ingreso:</span> <?php echo nl2br(htmlspecialchars($colaborador['fecha_ingreso'] ?? '')); ?></p>
+                        <p><span class="detail-label">Estatus:</span> <?php echo nl2br(htmlspecialchars($estatus ?? '')); ?></p>
                         
                         <?php if (!empty($colaborador['ruta_historial_academico_pdf'])): ?>
                             <?php
