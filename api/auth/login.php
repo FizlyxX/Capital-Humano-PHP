@@ -36,7 +36,7 @@ if (mysqli_stmt_num_rows($stmt) !== 1) {
     jsonError('Credenciales inválidas.', 401);
 }
 
-mysqli_stmt_bind_result($stmt, $id, $nombre_usuario, $password_hash, $rol, $activo);
+mysqli_stmt_bind_result($stmt, $id, $nombre_usuario, $password_hash, $activo);
 mysqli_stmt_fetch($stmt);
 
 if (!$activo) {
@@ -53,7 +53,6 @@ $payload = [
     'uid' => $id,
     'name' => $nombre_usuario,
     'email' => $nombre_usuario, // No hay campo de correo, usamos el nombre de usuario
-    'rol' => $rol,
     'iat' => time(),
     'exp' => time() + 3600,
     'aud' => JWT_VALID_AUDIENCE
@@ -72,6 +71,5 @@ jsonResponse([
         'id' => $id,
         'name' => $nombre_usuario,
         'email' => $nombre_usuario,
-        'rol' => $rol
     ]
 ]);
