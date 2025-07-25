@@ -3,11 +3,11 @@ session_start();
 
 require_once '../config.php';
 require_once 'funciones.php';
-require_once '../classes/Footer.php'; 
+require_once '../classes/Footer.php';
 
 // La variable $current_page debe ser definida antes de que navbar.php sea incluido
 $current_page = 'colaboradores';
-require_once '../includes/navbar.php'; 
+require_once '../includes/navbar.php';
 
 // Verificar si el usuario ha iniciado sesión y tiene permisos de Administrador o RRHH
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || (!esAdministrador() && !esRRHH())) {
@@ -20,9 +20,11 @@ $primer_nombre = $segundo_nombre = $primer_apellido = $segundo_apellido = "";
 $sexo = $identificacion = $fecha_nacimiento = $correo_personal = "";
 $telefono = $celular = $direccion = "";
 $fecha_ingreso = "";
+$estatus = ""; // Añadido: Inicializar la variable estatus
 $primer_nombre_err = $primer_apellido_err = $sexo_err = $identificacion_err = $fecha_nacimiento_err = "";
 $correo_personal_err = $telefono_err = $celular_err = $direccion_err = "";
 $fecha_ingreso_err = "";
+$estatus_err = ""; // Añadido: Inicializar la variable de error para estatus
 $foto_perfil_err = $historial_academico_pdf_err = "";
 
 // Procesar el formulario cuando se envía
@@ -41,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $celular = trim($_POST['celular']);
     $direccion = trim($_POST['direccion']);
     $fecha_ingreso = trim($_POST['fecha_ingreso']);
+    $estatus = trim($_POST['estatus']); // Añadido: Recoger el valor del estatus
 
     // 2. Validar datos
     if (empty($primer_nombre)) { $primer_nombre_err = "Ingrese el primer nombre."; }
@@ -63,6 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($fecha_nacimiento)) { $fecha_nacimiento_err = "Ingrese la fecha de nacimiento."; }
     if (empty($fecha_ingreso)) { $fecha_ingreso_err = "Ingrese la fecha de ingreso."; }
+    if (empty($estatus)) { $estatus_err = "Seleccione el estatus."; } // Añadido: Validar el estatus
+
     // Puedes añadir más validaciones (regex para correo/teléfono, formato de fecha, etc.)
 
     // 3. Procesar subida de Foto de Perfil y PDF
@@ -70,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Los errores se propagan si no hay éxito.
 
     // Si no hay errores de validación de texto, proceder con archivos y BD
-    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err)) {
+    if (empty($primer_nombre_err) && empty($primer_apellido_err) && empty($sexo_err) && empty($identificacion_err) && empty($fecha_nacimiento_err) && empty($fecha_ingreso_err) && empty($estatus_err)) { // Añadido: estatus_err en la condición
         
         $colaborador_data = [
             'primer_nombre' => $primer_nombre,
@@ -84,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'telefono' => $telefono,
             'celular' => $celular,
             'direccion' => $direccion,
-            'fecha_ingreso' => $fecha_ingreso
+            'fecha_ingreso' => $fecha_ingreso,
+            'estatus_id' => $estatus // Añadido: Pasar el estatus al array de datos
         ];
 
         $resultado_creacion = crearColaborador($link, $colaborador_data, 'foto_perfil', 'historial_academico_pdf');
@@ -120,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/app_style.css">
     <style>
-         .footer { 
+         .footer {
             background-color: #f8f9fa;
             border-top: 1px solid #e9ecef;
             text-align: center;
@@ -226,11 +232,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <textarea name="direccion" id="direccion" class="form-control" rows="3"><?php echo htmlspecialchars($direccion); ?></textarea>
             </div>
 
-            <div class="col-md-4">
-                <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
-                    <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
-                    <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>
-                    <span class="invalid-feedback text-danger"><?php echo $fecha_ingreso_err; ?></span>
+            <div class="row"> <div class="col-md-4">
+                    <div class="mb-3 <?php echo (!empty($fecha_ingreso_err)) ? 'has-error' : ''; ?>">
+                        <label for="fecha_ingreso" class="form-label">Fecha de Ingreso en la Organización:</label>
+                        <input type="date" name="fecha_ingreso" id="fecha_ingreso" class="form-control" value="<?php echo htmlspecialchars($fecha_ingreso); ?>" required>
+                        <span class="invalid-feedback text-danger"><?php echo $fecha_ingreso_err; ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3 <?php echo (!empty($estatus_err)) ? 'has-error' : ''; ?>">
+                        <label for="estatus" class="form-label">Estatus:</label>
+                        <select name="estatus" id="estatus" class="form-select" required>
+                            <option value="">Seleccione</option>
+                            <option value="1" <?php echo ($estatus == 1) ? 'selected' : ''; ?>>Vacaciones</option>
+                            <option value="2" <?php echo ($estatus == 2) ? 'selected' : ''; ?>>Licencia</option>
+                            <option value="3" <?php echo ($estatus == 3) ? 'selected' : ''; ?>>Incapacitado</option>
+                            <option value="4" <?php echo ($estatus == 4) ? 'selected' : ''; ?>>Trabajando</option>
+                        </select>
+                        <span class="invalid-feedback text-danger"><?php echo $estatus_err; ?></span>
+                    </div>
                 </div>
             </div>
 
@@ -256,7 +276,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="index.php" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
-    </div> <?php
+    </div>
+    <?php
     if (class_exists('Footer')) {
         $footer = new Footer();
         $footer->render();

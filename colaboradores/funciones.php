@@ -264,12 +264,12 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
     $pdf_result = subirPDF($pdf_file_input_name);
     if (isset($pdf_result['error'])) {
         // Opcional: borrar la foto si el PDF falla y la foto se subió (solo si es una nueva subida)
-        if (!empty($ruta_foto_perfil) && strpos($ruta_foto_perfil, 'original_') !== false) { 
+        if (!empty($ruta_foto_perfil) && strpos($ruta_foto_perfil, 'original_') !== false) {
             $uploaded_photo_name = basename($ruta_foto_perfil);
             if (file_exists(UPLOAD_DIR_FOTOS . 'original_' . $uploaded_photo_name)) {
                 @unlink(UPLOAD_DIR_FOTOS . 'original_' . $uploaded_photo_name);
             }
-            if (file_exists(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_name)) { 
+            if (file_exists(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_name)) {
                 @unlink(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_name);
             }
         }
@@ -277,15 +277,42 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
     }
     $ruta_historial_academico_pdf = $pdf_result['success'];
 
-    $sql = "INSERT INTO colaboradores (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, sexo, identificacion, fecha_nacimiento, correo_personal, telefono, celular, direccion, ruta_foto_perfil, ruta_historial_academico_pdf, fecha_ingreso, estatus_id, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+    // Valores predeterminados para las columnas que no se reciben del formulario
+    // y que no tienen un valor DEFAULT en la tabla o necesitamos especificarlo.
+    $estatus_id = 4; // Asumimos 'Trabajando' como estatus inicial
+    $fecha_salida = NULL; // Puede ser NULL
+    $id_usuario = NULL;   // Puede ser NULL
+
+    // Lista explícita de todas las columnas en la tabla `colaboradores`
+    // EXCLUIMOS `id_colaborador` (AUTO_INCREMENT), `fecha_creacion` (DEFAULT CURRENT_TIMESTAMP),
+    // y `activo` (DEFAULT '1') ya que se gestionan automáticamente por la BD o con un default.
+    $sql = "INSERT INTO colaboradores (
+                primer_nombre, segundo_nombre, primer_apellido, segundo_apellido,
+                sexo, identificacion, fecha_nacimiento, correo_personal,
+                telefono, celular, direccion, ruta_foto_perfil,
+                ruta_historial_academico_pdf, fecha_ingreso, estatus_id,
+                fecha_salida, id_usuario
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     if ($stmt = mysqli_prepare($link, $sql)) {
-        mysqli_stmt_bind_param($stmt, "ssssssssssssssi", // Son 13 's' para 13 variables
-            $data['primer_nombre'], $data['segundo_nombre'], $data['primer_apellido'],
-            $data['segundo_apellido'], $data['sexo'], $data['identificacion'],
-            $data['fecha_nacimiento'], $data['correo_personal'], $data['telefono'],
-            $data['celular'], $data['direccion'], $ruta_foto_perfil,
-            $ruta_historial_academico_pdf, $data['fecha_ingreso'], $data['estatus_id']
+        mysqli_stmt_bind_param($stmt, "sssssssssssssssii", // 15 's' y 2 'i'
+            $data['primer_nombre'],
+            $data['segundo_nombre'],
+            $data['primer_apellido'],
+            $data['segundo_apellido'],
+            $data['sexo'],
+            $data['identificacion'],
+            $data['fecha_nacimiento'],
+            $data['correo_personal'],
+            $data['telefono'],
+            $data['celular'],
+            $data['direccion'],
+            $ruta_foto_perfil,
+            $ruta_historial_academico_pdf,
+            $data['fecha_ingreso'],
+            $estatus_id, // Valor predeterminado
+            $fecha_salida, // Será NULL
+            $id_usuario // Será NULL
         );
 
         if (mysqli_stmt_execute($stmt)) {
@@ -294,12 +321,12 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
         } else {
             // Si la inserción en la BD falla, intenta borrar los archivos subidos (si es una nueva subida)
             if (!empty($ruta_foto_perfil) && strpos($ruta_foto_perfil, 'original_') !== false) {
-                $uploaded_photo_name = basename($ruta_foto_perfil);
-                if (file_exists(UPLOAD_DIR_FOTOS . 'original_' . $uploaded_photo_name)) {
-                    @unlink(UPLOAD_DIR_FOTOS . 'original_' . $uploaded_photo_name);
+                $uploaded_photo_base_name = basename($ruta_foto_perfil);
+                if (file_exists(UPLOAD_DIR_FOTOS . $uploaded_photo_base_name)) {
+                    @unlink(UPLOAD_DIR_FOTOS . $uploaded_photo_base_name);
                 }
-                if (file_exists(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_name)) { 
-                    @unlink(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_name);
+                if (file_exists(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_base_name)) {
+                     @unlink(UPLOAD_DIR_FOTOS . 'thumb_original_' . $uploaded_photo_base_name);
                 }
             }
             if (!empty($ruta_historial_academico_pdf) && strpos($ruta_historial_academico_pdf, 'pdf_') !== false) {
@@ -307,12 +334,12 @@ function crearColaborador($link, $data, $foto_file_input_name, $pdf_file_input_n
                     @unlink(UPLOAD_DIR_PDFS . basename($ruta_historial_academico_pdf));
                 }
             }
-            if (mysqli_errno($link) == 1062) { // Error de UNIQUE constraint violation
+            if (mysqli_errno($link) == 1062) { // Error de violación de restricción UNIQUE
                 mysqli_stmt_close($stmt);
                 return ['error' => 'La identificación (cédula) ya existe para otro colaborador.'];
             }
             mysqli_stmt_close($stmt);
-            return ['error' => 'Error al guardar el colaborador en la base de datos: ' . mysqli_error($link)]; // Añadir error de MySQL para depuración
+            return ['error' => 'Error al guardar el colaborador en la base de datos: ' . mysqli_error($link)];
         }
     }
     return ['error' => 'Error en la preparación de la consulta SQL para crear.'];
